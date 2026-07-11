@@ -3,17 +3,10 @@ name: Build Android APK
 on:
   workflow_dispatch:
 
-permissions:
-  contents: write
-
 jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 90
-
-    defaults:
-      run:
-        working-directory: ReadFlow
 
     steps:
       - name: Checkout code
@@ -25,13 +18,14 @@ jobs:
           node-version: 22
 
       - name: Install dependencies
-        run: npm install
+        run: cd ReadFlow && npm install
 
-      - name: Setup EAS
+      - name: Setup EAS CLI
         run: npm install -g eas-cli
 
-      - name: Trigger EAS Build
+      - name: Build APK
         run: |
+          cd ReadFlow
           eas build \
             --platform android \
             --profile preview \
@@ -41,7 +35,7 @@ jobs:
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
-      - name: Upload APK artifact
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: ReadFlow-APK
