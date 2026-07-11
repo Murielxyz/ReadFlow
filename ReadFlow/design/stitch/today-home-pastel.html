@@ -1,0 +1,324 @@
+<!DOCTYPE html><html lang="zh-CN" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>ReadFlow - Today</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#a98ce8",
+                        "inverse-primary": "#d2bcff",
+                        "inverse-on-surface": "#f3f0ef",
+                        "surface-container-lowest": "#ffffff",
+                        "background": "#FAF7F2",
+                        "on-tertiary-fixed-variant": "#5d4200",
+                        "secondary-fixed": "#adf2be",
+                        "on-secondary": "#ffffff",
+                        "surface-tint": "#6a4ea5",
+                        "on-tertiary-fixed": "#261900",
+                        "on-tertiary-container": "#443000",
+                        "surface-container-highest": "#e5e2e1",
+                        "outline": "#7a7582",
+                        "accent-yellow-light": "#FFDC84",
+                        "on-secondary-container": "#2d6f45",
+                        "on-secondary-fixed": "#00210e",
+                        "tertiary-fixed": "#ffdea4",
+                        "tertiary": "#7b5900",
+                        "error-container": "#ffdad6",
+                        "on-surface-variant": "#474553",
+                        "secondary-fixed-dim": "#92d6a3",
+                        "surface": "#FFFFFF",
+                        "on-secondary-fixed-variant": "#07522c",
+                        "on-primary-fixed-variant": "#52358b",
+                        "accent-red-light": "#FFDAD6",
+                        "on-error-container": "#93000a",
+                        "on-tertiary": "#ffffff",
+                        "surface-variant": "#e5e2e1",
+                        "inverse-surface": "#303030",
+                        "on-primary": "#ffffff",
+                        "primary": "#6a4ea5",
+                        "surface-bright": "#fcf9f8",
+                        "accent-blue-light": "#E1E0FF",
+                        "primary-fixed-dim": "#d2bcff",
+                        "secondary-container": "#aaefbb",
+                        "on-primary-fixed": "#24005a",
+                        "on-error": "#ffffff",
+                        "secondary": "#286a41",
+                        "on-surface": "#1b1b1c",
+                        "surface-container": "#f0eded",
+                        "surface-container-high": "#eae7e7",
+                        "surface-container-low": "#f6f3f2",
+                        "error": "#ba1a1a",
+                        "on-background": "#1b1b1c",
+                        "tertiary-fixed-dim": "#efc061",
+                        "surface-dim": "#dcd9d9",
+                        "outline-variant": "#cbc4d2",
+                        "tertiary-container": "#c0953b",
+                        "primary-fixed": "#eaddff",
+                        "on-primary-container": "#3d2077",
+                        "accent-green-light": "#DDE4DB",
+                        "border-dark": "#1F1F1F"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "card-padding": "16px",
+                        "gutter": "12px",
+                        "stack-sm": "8px",
+                        "stack-xs": "4px",
+                        "section-gap": "24px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "label-bold": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "display-title": ["Plus Jakarta Sans"],
+                        "body-sm": ["Plus Jakarta Sans"],
+                        "label-caps": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["16px", {"lineHeight": "24px", "fontWeight": "700"}],
+                        "body-md": ["12px", {"lineHeight": "18px", "fontWeight": "400"}],
+                        "label-bold": ["11px", {"lineHeight": "14px", "fontWeight": "700"}],
+                        "body-lg": ["14px", {"lineHeight": "20px", "fontWeight": "700"}],
+                        "display-title": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                        "body-sm": ["11px", {"lineHeight": "16px", "fontWeight": "400"}],
+                        "label-caps": ["9px", {"lineHeight": "12px", "letterSpacing": "0.05em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #FFFFFF;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .neo-shadow {
+            box-shadow: 4px 4px 0px 0px rgba(31, 31, 31, 1);
+        }
+        .neo-shadow-sm {
+            box-shadow: 2px 2px 0px 0px rgba(31, 31, 31, 1);
+        }
+        .active-press:active {
+            transform: translate(2px, 2px);
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body class="text-on-surface pb-24">
+<!-- Top App Bar (Simulated Shell Integration) -->
+
+<main class="max-w-md mx-auto px-margin-mobile py-section-gap space-y-section-gap">
+<!-- Greeting Section -->
+<section class="space-y-stack-xs">
+<h1 class="font-display-title text-display-title text-on-surface">晚上好，Muriel 🌙</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">今天也是充实的阅读时光呀 🌱</p>
+</section>
+<!-- Hero Card: Continue Reading -->
+<section class="border border-[#1F1F1F] rounded-xl p-card-padding bg-surface">
+<div class="flex items-center gap-card-padding mb-gutter">
+<div class="w-24 h-32 rounded-lg border border-border-dark overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Detailed book cover for Cixin Liu's The Three-Body Problem, featuring a dramatic cosmic scene with three suns and a minimalist futuristic landscape. The art style is high-contrast digital illustration with deep blues and glowing oranges, fitting the neo-scholastic aesthetic with sharp edges and premium textures." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCTd3Gf7BW6g6xIs7CFhSck_CViwktCbw2LZgdFznfuQ0oaZUJzXVk9CaTdOy7g3Oxf7EhY537MFWBL1UfPWG_FUHN-pJSrDqX8IB_vf5z9n-VuulAVW32125Sow07Eq6s8jb_8X0VuVzi6UH60nmNrQdOvMdQguhl4MLqYhBH7VBbUTqkc0bc72P_9hnLG6Q9qbJqZ-zSGm_cSWoizKa68wCkHIBHYjyNEqb3pnxWWrgD6MD5fA-9">
+</div>
+<div class="flex-1 space-y-stack-sm">
+<span class="font-label-caps text-label-caps text-primary uppercase">继续阅读</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">三体（全集）</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">刘慈欣 · 上次阅读：第二部 黑暗森林</p>
+<!-- Progress Bar -->
+<div class="space-y-stack-xs">
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 42%"></div>
+</div>
+<div class="flex justify-between font-label-bold text-label-bold text-on-surface-variant">
+<span class="">42%</span>
+<span class="">预计还需 5小时 20分钟</span>
+</div>
+</div>
+</div>
+</div>
+<div class="flex gap-gutter">
+<button class="flex-1 bg-accent-blue-light border border-border-dark py-3 rounded-xl font-label-bold text-on-primary-container active-press transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+                    继续阅读
+                </button>
+<button class="w-12 h-12 flex items-center justify-center border border-border-dark rounded-xl active-press">
+<span class="material-symbols-outlined">bookmark</span>
+</button>
+</div>
+</section>
+<!-- Today Stats: Bento Grid -->
+<section class="space-y-gutter">
+<div class="flex justify-between items-center">
+<h3 class="font-headline-md text-headline-md text-on-surface">今日数据</h3>
+<button class="text-primary font-label-bold text-label-bold">编辑目标</button>
+</div>
+<div class="grid grid-cols-2 gap-gutter">
+<!-- Stat Card 1 -->
+<div class="bg-[#F3E8FF] p-card-padding rounded-xl flex flex-col gap-stack-xs">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: &quot;FILL&quot; 1;">schedule</span>
+<div>
+<span class="font-display-title text-display-title">48</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant ml-1">分钟</span>
+</div>
+<span class="font-label-bold text-label-bold text-on-surface-variant">阅读时间</span>
+</div>
+<!-- Stat Card 2 -->
+<div class="bg-[#E8F5E9] p-card-padding rounded-xl flex flex-col gap-stack-xs">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: &quot;FILL&quot; 1;">menu_book</span>
+<div>
+<span class="font-display-title text-display-title">34</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant ml-1">页</span>
+</div>
+<span class="font-label-bold text-label-bold text-on-surface-variant">阅读页数</span>
+</div>
+<!-- Stat Card 3 -->
+<div class="bg-[#FFF0F0] p-card-padding rounded-xl flex flex-col gap-stack-xs">
+<span class="material-symbols-outlined text-error" style="font-variation-settings: &quot;FILL&quot; 1;">cloud</span>
+<div>
+<span class="font-display-title text-display-title">2</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant ml-1">条</span>
+</div>
+<span class="font-label-bold text-label-bold text-on-surface-variant">想法记录</span>
+</div>
+<!-- Stat Card 4 -->
+<div class="bg-[#FFF9E6] p-card-padding rounded-xl flex flex-col gap-stack-xs">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: &quot;FILL&quot; 1;">auto_awesome</span>
+<div>
+<span class="font-display-title text-display-title">5</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant ml-1">段</span>
+</div>
+<span class="font-label-bold text-label-bold text-on-surface-variant">高亮划线</span>
+</div>
+</div>
+</section>
+<!-- Reading Timeline -->
+<section class="space-y-gutter">
+<div class="flex justify-between items-center">
+<h3 class="font-headline-md text-headline-md text-on-surface">今日阅读历程</h3>
+<button class="material-symbols-outlined text-on-surface-variant">chevron_right</button>
+</div>
+<div class="relative pl-6 space-y-section-gap before:content-[''] before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-outline-variant before:opacity-30">
+<!-- Timeline Item 1 -->
+<div class="relative flex items-center justify-between">
+<div class="absolute -left-[23px] w-6 h-6 rounded-full bg-accent-blue-light border border-border-dark flex items-center justify-center">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+</div>
+<div class="flex items-center gap-card-padding pl-4">
+<span class="font-label-bold text-label-bold text-on-surface-variant">20:10</span>
+<div class="flex items-center gap-2">
+<img class="w-6 h-8 rounded-sm object-cover border border-border-dark" data-alt="Small thumbnail of the book cover for The Three-Body Problem by Cixin Liu. A sleek, high-quality digital book icon with minimalist cosmic patterns and bold typography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWgJlcdWgCPlpk8v6cxBMZL_-67GdXCuagaXI8tzRWBiJOo7zr-jU_aXKdYxfzZWoaWq0LBL5JhTIhwbHgse3O_S6s85vXNPAMwYpupBbo05exZfvP9uJh2uWTuymBabyanNjGX1k64efgLIC7eA8WfbQfDrlTambiaZStwkicKDt7SyYc5B0D6pdr5vCav0zr5os55Hp5LyYheUhJLZfH7NLUiiUzZbaEl77w2Rog9EXHECA5PihI">
+<span class="font-body-md text-body-md">阅读《三体（全集）》</span>
+</div>
+</div>
+<span class="font-label-bold text-label-bold text-on-surface-variant">25 分钟</span>
+</div>
+<!-- Timeline Item 2 -->
+<div class="relative flex items-center justify-between">
+<div class="absolute -left-[23px] w-6 h-6 rounded-full bg-accent-green-light border border-border-dark flex items-center justify-center">
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+</div>
+<div class="flex items-center gap-card-padding pl-4">
+<span class="font-label-bold text-label-bold text-on-surface-variant">14:30</span>
+<div class="flex items-center gap-2">
+<img class="w-6 h-8 rounded-sm object-cover border border-border-dark" data-alt="Small thumbnail of a classic book cover, minimalist and scholarly. Muted Earth tones with elegant Chinese calligraphy. The mood is contemplative and intellectual." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgHVLw2CMJil2DIf7FDXBb_w_I7nX8oLIEVKUaVB5WLMrCBOdCjjUMMlQYIAvllbBhUrsiE-zHm5vW3Tg4AUGl4yhvticgqJlTqFDbw_XRlHZN7M9TRN-Lk20vYsq36M4hatC47m6NTHrwG94zJXtwn4jnlz6w8o9tmZhR8TbgAW67oBhsIH5DDrBy6rr1cNRDcBMPX1caUm-HDE5TQ4f2UdImvS91hsx-wTSnBcyE8TRA5dQcNWwU">
+<span class="font-body-md text-body-md">阅读《活着》</span>
+</div>
+</div>
+<span class="font-label-bold text-label-bold text-on-surface-variant">18 分钟</span>
+</div>
+<!-- Timeline Item 3 (Completed) -->
+<div class="relative flex items-center justify-between">
+<div class="absolute -left-[23px] w-6 h-6 rounded-full bg-accent-yellow-light border border-border-dark flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px] text-tertiary" style="font-variation-settings: &quot;FILL&quot; 1;">check</span>
+</div>
+<div class="flex items-center gap-card-padding pl-4">
+<span class="font-label-bold text-label-bold text-on-surface-variant">昨天</span>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md">完成《人类简史》</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">读完第 15 章</span>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full bg-surface border border-border-dark flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[16px]">more_horiz</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Daily Quote Card -->
+<section class="border border-[#1F1F1F] rounded-xl p-card-padding bg-surface relative overflow-hidden">
+<div class="absolute -right-4 -bottom-4 opacity-10">
+
+</div>
+<div class="space-y-card-padding relative z-10">
+<p class="font-headline-md text-headline-md leading-relaxed" style="color: rgb(107, 107, 107); font-style: italic;">真正的自由，不是想做什么，而是知道自己为什么而读。</p>
+<div class="flex justify-between items-end">
+<span class="font-body-md text-body-md text-on-surface-variant">— 尼采</span>
+<div class="flex gap-gutter">
+<button class="material-symbols-outlined text-primary">share</button>
+<button class="material-symbols-outlined text-primary">favorite</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Nav Bar -->
+<nav class="fixed bottom-0 w-full z-50 bg-surface border-t border-[#1F1F1F] h-16 flex justify-around items-center">
+<!-- Today (Active) -->
+<a class="flex flex-col items-center justify-center bg-accent-blue-light text-primary rounded-xl border border-[#1F1F1F] px-4 py-1" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: &quot;FILL&quot; 1;">calendar_today</span>
+<span class="font-label-bold text-label-bold">Today</span>
+</a>
+<!-- Library -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">auto_stories</span>
+<span class="font-label-bold text-label-bold">Library</span>
+</a>
+<!-- Discover -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-label-bold text-label-bold">Discover</span>
+</a>
+<!-- Stats -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">bar_chart</span>
+<span class="font-label-bold text-label-bold">Stats</span>
+</a>
+<!-- Profile -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-bold text-label-bold">Profile</span>
+</a>
+</nav>
+<script>
+        // Micro-interactions
+        document.querySelectorAll('button, a').forEach(el => {
+            el.addEventListener('click', (e) => {
+                // Haptic simulation or small scale animation could go here
+            });
+        });
+
+        // Dynamic Greeting based on time (Simplified for this static demo)
+        const hour = new Date().getHours();
+        const greetingEl = document.querySelector('h1');
+        if (hour < 12) greetingEl.innerHTML = "早上好，Muriel ☀️";
+        else if (hour < 18) greetingEl.innerHTML = "下午好，Muriel ☕";
+    </script>
+
+
+</body></html>

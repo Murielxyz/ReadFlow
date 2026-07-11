@@ -1,0 +1,49 @@
+{
+  "name": "readflow",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "dependencies": {
+    "@expo-google-fonts/plus-jakarta-sans": "^0.4.2",
+    "@expo/vector-icons": "^15.0.2",
+    "@papyrus-sdk/core": "^0.2.18",
+    "@papyrus-sdk/engine-native": "^0.2.17",
+    "@papyrus-sdk/types": "^0.2.11",
+    "@papyrus-sdk/ui-react-native": "^0.2.20",
+    "epubjs": "^0.3.93",
+    "expo": "~57.0.1",
+    "expo-constants": "~57.0.2",
+    "expo-dev-client": "~57.0.5",
+    "expo-document-picker": "~57.0.0",
+    "expo-file-system": "~57.0.0",
+    "expo-font": "~57.0.0",
+    "expo-haptics": "~57.0.0",
+    "expo-image": "~57.0.0",
+    "expo-image-picker": "~57.0.2",
+    "expo-linking": "~57.0.1",
+    "expo-notifications": "~57.0.3",
+    "expo-router": "~57.0.2",
+    "expo-sqlite": "~57.0.0",
+    "expo-status-bar": "~57.0.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-native": "0.86.0",
+    "react-native-gesture-handler": "~2.32.0",
+    "react-native-safe-area-context": "~5.7.0",
+    "react-native-screens": "4.25.2",
+    "react-native-view-shot": "^5.1.1",
+    "react-native-web": "^0.21.2",
+    "react-native-webview": "^13.16.1",
+    "zustand": "^5.0.14"
+  },
+  "devDependencies": {
+    "@types/react": "~19.2.2",
+    "typescript": "~6.0.3"
+  },
+  "scripts": {
+    "start": "expo start",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "web": "expo start --web"
+  },
+  "private": true
+}

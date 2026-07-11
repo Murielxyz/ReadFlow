@@ -1,0 +1,349 @@
+<!DOCTYPE html><html lang="zh-CN"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>ReadFlow - 统计</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed": "#ffdea4",
+                        "tertiary": "#7b5900",
+                        "surface": "#FFFFFF",
+                        "secondary-fixed-dim": "#92d6a3",
+                        "on-surface-variant": "#494551",
+                        "on-secondary-container": "#2d6f45",
+                        "accent-yellow-light": "#FFDC84",
+                        "outline": "#7a7582",
+                        "surface-container-highest": "#e5e2e1",
+                        "on-secondary-fixed": "#00210e",
+                        "on-tertiary-container": "#443000",
+                        "on-tertiary-fixed": "#261900",
+                        "surface-tint": "#6a4ea5",
+                        "background": "#FAF7F2",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-container": "#a98ce8",
+                        "inverse-primary": "#d2bcff",
+                        "inverse-on-surface": "#f3f0ef",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed": "#adf2be",
+                        "on-tertiary-fixed-variant": "#5d4200",
+                        "tertiary-fixed-dim": "#efc061",
+                        "on-background": "#1b1b1c",
+                        "surface-container-low": "#f6f3f2",
+                        "error": "#ba1a1a",
+                        "surface-container-high": "#eae7e7",
+                        "on-primary-container": "#3d2077",
+                        "accent-green-light": "#DDE4DB",
+                        "tertiary-container": "#c0953b",
+                        "primary-fixed": "#eaddff",
+                        "surface-dim": "#dcd9d9",
+                        "outline-variant": "#cbc4d2",
+                        "surface-container": "#f0eded",
+                        "on-surface": "#1b1b1c",
+                        "secondary": "#286a41",
+                        "surface-bright": "#fcf9f8",
+                        "accent-blue-light": "#E1E0FF",
+                        "primary": "#6a4ea5",
+                        "on-primary": "#ffffff",
+                        "surface-variant": "#e5e2e1",
+                        "inverse-surface": "#303030",
+                        "on-primary-fixed": "#24005a",
+                        "on-error": "#ffffff",
+                        "secondary-container": "#aaefbb",
+                        "primary-fixed-dim": "#d2bcff",
+                        "on-secondary-fixed-variant": "#07522c",
+                        "on-primary-fixed-variant": "#52358b",
+                        "accent-red-light": "#FFDAD6",
+                        "on-tertiary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "border-dark": "#1F1F1F"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "section-gap": "24px",
+                        "margin-mobile": "16px",
+                        "stack-xs": "4px",
+                        "gutter": "12px",
+                        "stack-sm": "8px",
+                        "card-padding": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "display-title": ["Plus Jakarta Sans"],
+                        "body-sm": ["Plus Jakarta Sans"],
+                        "label-caps": ["Plus Jakarta Sans"],
+                        "label-bold": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["16px", {"lineHeight": "24px", "fontWeight": "700"}],
+                        "body-md": ["12px", {"lineHeight": "18px", "fontWeight": "400"}],
+                        "display-title": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                        "body-sm": ["11px", {"lineHeight": "16px", "fontWeight": "400"}],
+                        "label-caps": ["9px", {"lineHeight": "12px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "label-bold": ["11px", {"lineHeight": "14px", "fontWeight": "700"}],
+                        "body-lg": ["14px", {"lineHeight": "20px", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #FAF7F2;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .hard-shadow {
+            box-shadow: 4px 4px 0px 0px #1F1F1F;
+        }
+        .hard-shadow-sm {
+            box-shadow: 2px 2px 0px 0px #1F1F1F;
+        }
+        .active-press:active {
+            transform: translate(2px, 2px);
+            box-shadow: 0px 0px 0px 0px #1F1F1F;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .heatmap-cell {
+            aspect-ratio: 1/1;
+            border-radius: 2px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="font-body-md text-on-background max-w-md mx-auto min-h-screen pb-24" style="background-color: rgb(255, 255, 255);">
+<!-- TopAppBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface border-b border-border-dark max-w-md mx-auto shadow-[1px_1px_0px_0px_rgba(31,31,31,1)]">
+<div class="flex justify-between items-center px-margin-mobile h-16">
+<div class="flex items-center gap-stack-sm hover:bg-surface-container-low transition-colors rounded-lg p-2 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all">
+<span class="material-symbols-outlined text-primary">menu_book</span>
+</div>
+<h1 class="font-display-title text-display-title text-on-surface">统计</h1>
+<div class="flex items-center gap-stack-sm hover:bg-surface-container-low transition-colors rounded-lg p-2 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all">
+<span class="material-symbols-outlined text-on-surface-variant">search</span>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="mt-20 px-margin-mobile flex flex-col gap-section-gap">
+<!-- Time Toggle -->
+<section class="flex justify-center">
+<div class="inline-flex p-1 bg-surface border border-border-dark rounded-xl shadow-[1px_1px_0px_0px_rgba(31,31,31,1)]">
+<button class="px-6 py-1.5 rounded-lg font-label-bold text-label-bold bg-primary-container text-on-primary-container border border-border-dark">周</button>
+<button class="px-6 py-1.5 rounded-lg font-label-bold text-label-bold text-on-surface-variant hover:bg-surface-container-low transition-colors">月</button>
+<button class="px-6 py-1.5 rounded-lg font-label-bold text-label-bold text-on-surface-variant hover:bg-surface-container-low transition-colors">年</button>
+</div>
+</section><div class="flex items-center justify-center gap-4 mt-4">
+<button class="w-8 h-8 flex items-center justify-center rounded-lg border border-border-dark bg-surface active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<span class="font-label-bold text-on-surface">2026.07.01 - 2026.07.07</span>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg border border-border-dark bg-surface active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+<!-- Overview Stats (Pastel Cards - No Borders as requested) -->
+<section class="grid grid-cols-2 gap-gutter"><div class="bg-accent-blue-light/30 p-card-padding rounded-2xl border border-border-dark flex flex-col items-center justify-center text-center"><span class="material-symbols-outlined text-primary mb-stack-sm" style="font-variation-settings: &quot;FILL&quot; 1;">timer</span><span class="font-display-title text-display-title text-on-surface">125h</span><span class="font-label-caps text-label-caps text-on-surface-variant uppercase">累计阅读</span></div><div class="bg-accent-green-light/30 p-card-padding rounded-2xl border border-border-dark flex flex-col items-center justify-center text-center"><span class="material-symbols-outlined text-secondary mb-stack-sm" style="font-variation-settings: &quot;FILL&quot; 1;">auto_stories</span><span class="font-display-title text-display-title text-on-surface">12本</span><span class="font-label-caps text-label-caps text-on-surface-variant uppercase">读完书籍</span></div><div class="bg-accent-yellow-light/30 p-card-padding rounded-2xl border border-border-dark flex flex-col items-center justify-center text-center"><span class="material-symbols-outlined text-tertiary mb-stack-sm" style="font-variation-settings: &quot;FILL&quot; 1;">speed</span><span class="font-display-title text-display-title text-on-surface">342</span><span class="font-label-caps text-label-caps text-on-surface-variant uppercase">平均速度 WPM</span></div><div class="bg-accent-red-light/30 p-card-padding rounded-2xl border border-border-dark flex flex-col items-center justify-center text-center"><span class="material-symbols-outlined text-error mb-stack-sm" style="font-variation-settings: &quot;FILL&quot; 1;">analytics</span><span class="font-display-title text-display-title text-on-surface">64%</span><span class="font-label-caps text-label-caps text-on-surface-variant uppercase">本月进度</span></div></section>
+<!-- Reading Heatmap -->
+<section class="bg-surface border border-border-dark p-card-padding rounded-xl shadow-[1px_1px_0px_0px_rgba(31,31,31,1)]">
+<div class="flex justify-between items-center mb-section-gap">
+<h3 class="font-headline-md text-headline-md">阅读热力图</h3>
+<span class="font-body-sm text-body-sm text-on-surface-variant">最近30天</span>
+</div>
+<div class="grid grid-cols-7 gap-1">
+<!-- Row 1 -->
+<div class="heatmap-cell bg-primary/10"></div>
+<div class="heatmap-cell bg-primary/40"></div>
+<div class="heatmap-cell bg-primary/20"></div>
+<div class="heatmap-cell bg-surface-container border border-outline-variant"></div>
+<div class="heatmap-cell bg-primary/60"></div>
+<div class="heatmap-cell bg-primary/10"></div>
+<div class="heatmap-cell bg-primary/80"></div>
+<!-- Row 2 -->
+<div class="heatmap-cell bg-primary/100"></div>
+<div class="heatmap-cell bg-primary/40"></div>
+<div class="heatmap-cell bg-primary/20"></div>
+<div class="heatmap-cell bg-primary/60"></div>
+<div class="heatmap-cell bg-primary/20"></div>
+<div class="heatmap-cell bg-surface-container border border-outline-variant"></div>
+<div class="heatmap-cell bg-primary/40"></div>
+<!-- Row 3 -->
+<div class="heatmap-cell bg-primary/60"></div>
+<div class="heatmap-cell bg-primary/80"></div>
+<div class="heatmap-cell bg-primary/10"></div>
+<div class="heatmap-cell bg-primary/40"></div>
+<div class="heatmap-cell bg-primary/20"></div>
+<div class="heatmap-cell bg-primary/100"></div>
+<div class="heatmap-cell bg-primary/60"></div>
+<!-- Row 4 -->
+<div class="heatmap-cell bg-primary/20"></div>
+<div class="heatmap-cell bg-primary/10"></div>
+<div class="heatmap-cell bg-surface-container border border-outline-variant"></div>
+<div class="heatmap-cell bg-primary/40"></div>
+<div class="heatmap-cell bg-primary/20"></div>
+<div class="heatmap-cell bg-primary/60"></div>
+<div class="heatmap-cell bg-primary/80"></div>
+</div>
+<div class="mt-4 flex justify-end items-center gap-2">
+<span class="font-body-sm text-body-sm">Less</span>
+<div class="flex gap-1">
+<div class="w-3 h-3 rounded-[2px] bg-surface-container"></div>
+<div class="w-3 h-3 rounded-[2px] bg-primary/20"></div>
+<div class="w-3 h-3 rounded-[2px] bg-primary/60"></div>
+<div class="w-3 h-3 rounded-[2px] bg-primary/100"></div>
+</div>
+<span class="font-body-sm text-body-sm">More</span>
+</div>
+</section>
+<!-- Reading Duration Chart -->
+<section class="bg-surface border border-border-dark p-card-padding rounded-xl shadow-[1px_1px_0px_0px_rgba(31,31,31,1)]">
+<h3 class="font-headline-md text-headline-md mb-section-gap">每日阅读时长 (h)</h3>
+<div class="flex items-end justify-between h-32 gap-gutter px-2">
+<div class="flex flex-col items-center gap-2 flex-1">
+<div class="w-full bg-accent-blue-light border border-border-dark rounded-t-lg" style="height: 40%;"></div>
+<span class="font-body-sm text-body-sm">周一</span>
+</div>
+<div class="flex flex-col items-center gap-2 flex-1">
+<div class="w-full bg-accent-green-light border border-border-dark rounded-t-lg" style="height: 60%;"></div>
+<span class="font-body-sm text-body-sm">周二</span>
+</div>
+<div class="flex flex-col items-center gap-2 flex-1">
+<div class="w-full bg-accent-yellow-light border border-border-dark rounded-t-lg" style="height: 30%;"></div>
+<span class="font-body-sm text-body-sm">周三</span>
+</div>
+<div class="flex flex-col items-center gap-2 flex-1">
+<div class="w-full bg-primary-container border border-border-dark rounded-t-lg" style="height: 85%;"></div>
+<span class="font-body-sm text-body-sm">周四</span>
+</div>
+<div class="flex flex-col items-center gap-2 flex-1">
+<div class="w-full bg-accent-red-light border border-border-dark rounded-t-lg" style="height: 50%;"></div>
+<span class="font-body-sm text-body-sm">周五</span>
+</div>
+<div class="flex flex-col items-center gap-2 flex-1">
+<div class="w-full bg-accent-blue-light border border-border-dark rounded-t-lg" style="height: 95%;"></div>
+<span class="font-body-sm text-body-sm">周六</span>
+</div>
+<div class="flex flex-col items-center gap-2 flex-1">
+<div class="w-full bg-accent-green-light border border-border-dark rounded-t-lg" style="height: 70%;"></div>
+<span class="font-body-sm text-body-sm">周日</span>
+</div>
+</div>
+</section>
+<!-- Categories & Sources Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-section-gap">
+<!-- Categories -->
+<section class="bg-surface border border-border-dark p-card-padding rounded-xl shadow-[1px_1px_0px_0px_rgba(31,31,31,1)]">
+<h3 class="font-headline-md text-headline-md mb-gutter">阅读分类</h3>
+<div class="space-y-stack-sm"><div class="flex flex-wrap gap-2"><span class="px-3 py-1 rounded-full border border-border-dark bg-accent-blue-light/30 text-body-sm font-label-bold">科幻 (5)</span><span class="px-3 py-1 rounded-full border border-border-dark bg-accent-green-light/30 text-body-sm font-label-bold">文学 (4)</span><span class="px-3 py-1 rounded-full border border-border-dark bg-accent-yellow-light/30 text-body-sm font-label-bold">心理 (3)</span><span class="px-3 py-1 rounded-full border border-border-dark bg-accent-red-light/30 text-body-sm font-label-bold">历史 (2)</span></div></div>
+</section>
+<!-- Sources -->
+<section class="bg-surface border border-border-dark p-card-padding rounded-xl shadow-[1px_1px_0px_0px_rgba(31,31,31,1)]">
+<h3 class="font-headline-md text-headline-md mb-gutter">阅读来源</h3>
+<div class="flex flex-wrap gap-2"><span class="px-3 py-1 rounded-full border border-border-dark bg-accent-blue-light/30 text-body-sm font-label-bold">EPUB (8)</span><span class="px-3 py-1 rounded-full border border-border-dark bg-accent-green-light/30 text-body-sm font-label-bold">Kindle (6)</span><span class="px-3 py-1 rounded-full border border-border-dark bg-accent-yellow-light/30 text-body-sm font-label-bold">实体书 (3)</span><span class="px-3 py-1 rounded-full border border-border-dark bg-accent-red-light/30 text-body-sm font-label-bold">微信阅读 (5)</span></div>
+</section>
+</div>
+<section class="bg-surface border border-border-dark p-card-padding rounded-xl mb-section-gap shadow-[1px_1px_0px_0px_rgba(31,31,31,1)]">
+<h3 class="font-headline-md text-headline-md mb-gutter">本周书籍详情</h3>
+<div class="space-y-3">
+<div class="flex items-center justify-between p-2 rounded-lg border border-border-dark/10 bg-surface-container-lowest">
+<div class="flex items-center gap-3">
+<div class="w-10 h-14 bg-accent-blue-light rounded border border-border-dark flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">book</span>
+</div>
+<div class="flex flex-col">
+<span class="font-body-lg text-on-surface">三体</span>
+<span class="font-body-sm text-on-surface-variant">刘慈欣</span>
+</div>
+</div>
+<span class="font-label-bold text-primary">3h 20m</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded-lg border border-border-dark/10 bg-surface-container-lowest">
+<div class="flex items-center gap-3">
+<div class="w-10 h-14 bg-accent-green-light rounded border border-border-dark flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary">book</span>
+</div>
+<div class="flex flex-col">
+<span class="font-body-lg text-on-surface">活着</span>
+<span class="font-body-sm text-on-surface-variant">余华</span>
+</div>
+</div>
+<span class="font-label-bold text-secondary">1h 45m</span>
+</div>
+</div>
+</section></main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center py-2 px-2 bg-surface border-t border-border-dark z-50 max-w-md mx-auto">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 hover:bg-surface-container-high transition-transform active:scale-95" href="#">
+<span class="material-symbols-outlined">auto_stories</span>
+<span class="font-label-bold text-label-bold">Today</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 hover:bg-surface-container-high transition-transform active:scale-95" href="#">
+<span class="material-symbols-outlined">library_books</span>
+<span class="font-label-bold text-label-bold">Library</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 hover:bg-surface-container-high transition-transform active:scale-95" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-label-bold text-label-bold">Discover</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-3 py-1 border border-border-dark shadow-[2px_2px_0px_0px_rgba(31,31,31,1)] transition-transform active:scale-95" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: &quot;FILL&quot; 1;">leaderboard</span>
+<span class="font-label-bold text-label-bold">Stats</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 hover:bg-surface-container-high transition-transform active:scale-95" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-bold text-label-bold">Profile</span>
+</a>
+</nav>
+<script>
+        // Micro-interaction: Header shadow shrinks on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 20) {
+                nav.style.boxShadow = '2px 2px 0px 0px rgba(31,31,31,1)';
+                nav.style.transform = 'translateY(1px)';
+            } else {
+                nav.style.boxShadow = '4px 4px 0px 0px rgba(31,31,31,1)';
+                nav.style.transform = 'translateY(0px)';
+            }
+        });
+
+        // Toggle Active State logic for time buttons
+        const toggleButtons = document.querySelectorAll('section button');
+        toggleButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                toggleButtons.forEach(b => {
+                    b.classList.remove('bg-primary-container', 'text-on-primary-container', 'border', 'border-border-dark');
+                    b.classList.add('text-on-surface-variant');
+                });
+                btn.classList.add('bg-primary-container', 'text-on-primary-container', 'border', 'border-border-dark');
+                btn.classList.remove('text-on-surface-variant');
+            });
+        });
+    </script>
+
+
+</body></html>

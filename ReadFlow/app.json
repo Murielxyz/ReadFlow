@@ -1,0 +1,46 @@
+{
+  "expo": {
+    "name": "ReadFlow",
+    "slug": "ReadFlow",
+    "version": "2.3",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "scheme": "readflow",
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#4A90D9",
+          "defaultChannel": "reading-reminder"
+        }
+      ]
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.muriell5523.ReadFlow"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#FEFCF8",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "package": "com.muriell5523.ReadFlow"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "a7bcd910-4ca0-4839-b5b8-294d7c75027b"
+      }
+    }
+  }
+}

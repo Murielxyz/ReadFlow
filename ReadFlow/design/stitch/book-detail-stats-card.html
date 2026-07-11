@@ -1,0 +1,247 @@
+<!DOCTYPE html><html class="light" lang="zh-CN" style="width: 390px; height: 1602px; overflow: hidden; position: relative;"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface": "#FFFFFF",
+                    "background": "#FAF7F2",
+                    "on-surface": "#1F1F1F",
+                    "on-surface-variant": "#474553",
+                    "primary": "#A98CE8",
+                    "secondary": "#8ED2A0",
+                    "tertiary": "#F6C667"
+            },
+            "borderRadius": {
+                    "xl": "16px",
+                    "lg": "12px",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "gutter": "12px",
+                    "md": "16px",
+                    "sm": "12px"
+            }
+          }
+        }
+      }
+    }catch(_e){}</script></head><body class="font-body-md text-on-surface bg-white">
+<!-- Top AppBar -->
+<header class="w-full top-0 sticky z-40 bg-white border-on-surface flex items-center justify-between px-md py-3 border-b"><div class="flex items-center gap-3">
+<button class="material-symbols-outlined text-on-surface p-1" data-original-icon="arrow_back">arrow_back</button>
+<h1 class="font-bold text-lg">书籍详情</h1>
+</div>
+<div class="flex items-center gap-1">
+<button class="material-symbols-outlined text-on-surface p-1">share</button>
+<button class="material-symbols-outlined text-on-surface p-1" data-original-icon="more_horiz">more_horiz</button>
+</div></header>
+<main class="px-margin-mobile py-6 space-y-6 max-w-md mx-auto bg-white">
+<!-- Section 1: Book Info Header -->
+<section class="flex gap-4 items-start"><div class="flex flex-col gap-3 w-[110px] shrink-0">
+  <div class="aspect-[3/4] rounded-xl overflow-hidden border border-on-surface">
+    <img alt="三体封面" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDq-QHcolKFuY_iximz7_GiJ9Vg3iEDJNqOyA8gi3tk03Y4Da1wBW7v29teHiTPbushJsWryhOS3dewmRiHrkBRbJ0m32qfPRS4uJxjEQ10uFh3tCMHWVJ5NJ8loivo0ZUdHaoSUE4Y0yXDr7OtJ24bA0kyr7E1LTnt2_nOzk6zaD7EfvbCAnfz8AqZcgwco9zKR8CcjWo13Zl8xQ8xdw8RnJADIwAQ6Gslh-egBuKJPuoYPl8wdSnimGS99Ia6-X6_NA">
+  </div>
+  <button class="flex items-center justify-center gap-1.5 px-3 py-1.5 bg-white rounded-full border border-on-surface btn-press">
+    <span class="w-2 h-2 rounded-full bg-primary"></span>
+    <span class="text-[11px] font-bold">在读</span>
+    <span class="material-symbols-outlined text-xs">expand_more</span>
+  </button>
+</div>
+<div class="flex-1 flex flex-col gap-4">
+  <div class="flex flex-col gap-1">
+    <div class="flex justify-between items-start gap-2">
+      <h2 class="font-bold text-xl leading-tight flex-1">三体（全集）</h2>
+      <div class="flex gap-2 shrink-0">
+        <button class="w-8 h-8 rounded-lg bg-white flex items-center justify-center btn-press border border-on-surface">
+          <span class="material-symbols-outlined text-red-500 text-base">favorite</span>
+        </button>
+        <button class="w-8 h-8 rounded-lg bg-white flex items-center justify-center btn-press border border-on-surface">
+          <span class="material-symbols-outlined text-on-surface text-base">library_add</span>
+        </button>
+      </div>
+    </div>
+    <p class="font-bold text-sm">刘慈欣</p>
+    <p class="text-on-surface-variant text-[11px]">重庆出版社 • 2006</p>
+  </div>
+  <div class="flex items-center gap-2">
+    <div class="flex items-center">
+      <span class="material-symbols-outlined text-lg" style="color: rgb(255, 209, 102); font-variation-settings: &quot;FILL&quot; 1;">star</span>
+      <span class="material-symbols-outlined text-lg" style="color: rgb(255, 209, 102); font-variation-settings: &quot;FILL&quot; 1;">star</span>
+      <span class="material-symbols-outlined text-lg" style="color: rgb(255, 209, 102); font-variation-settings: &quot;FILL&quot; 1;">star</span>
+      <span class="material-symbols-outlined text-lg" style="color: rgb(255, 209, 102); font-variation-settings: &quot;FILL&quot; 1;">star</span>
+      <span class="material-symbols-outlined text-lg" style="color: rgb(255, 209, 102); font-variation-settings: &quot;FILL&quot; 0;">star</span>
+    </div>
+    <span class="text-lg font-bold leading-none">4.0</span>
+  </div>
+  <p class="text-[11px] text-on-surface-variant leading-relaxed">
+    文化大革命如火如荼进行的同时，军方探寻外星文明的绝密计划“红岸工程”取得了突破性进展...
+    <span class="text-primary font-bold whitespace-nowrap cursor-pointer">查看更多</span>
+  </p>
+</div></section>
+<!-- Tags Row -->
+<section class="flex gap-2 overflow-x-auto hide-scrollbar pb-1">
+<span class="px-3 py-1 bg-accent-green modern-border rounded-full text-[11px] font-bold whitespace-nowrap border" style="background-color: rgb(255, 218, 214);">科幻</span>
+<span class="px-3 py-1 bg-accent-purple modern-border rounded-full text-[11px] font-bold whitespace-nowrap border">硬科幻</span>
+<span class="px-3 py-1 bg-accent-yellow modern-border rounded-full text-[11px] font-bold whitespace-nowrap border">宇宙</span>
+<button class="w-7 h-7 flex items-center justify-center rounded-full modern-border bg-white btn-press border">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</section>
+<!-- Section 2: Continue Reading Card -->
+<section class="accent-purple modern-border rounded-xl p-4 hard-shadow relative border bg-accent-purple/20" style="background-color: #E1E0FF; border: 1px solid #1F1F1F;">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="font-bold text-primary text-sm mb-1">继续阅读 EPUB</h3>
+<p class="font-bold text-base">第二部 黑暗森林</p>
+<div class="flex items-center gap-3 mt-2">
+<span class="text-[11px] font-bold opacity-70">阅读进度 42%</span>
+</div>
+<div class="w-48 h-1.5 bg-primary/20 rounded-full mt-2 overflow-hidden">
+<div class="w-[42%] h-full bg-primary rounded-full"></div>
+</div>
+</div>
+<button class="bg-white modern-border rounded-xl p-2 flex flex-col items-center justify-center w-16 h-20 btn-press border">
+<span class="material-symbols-outlined text-primary text-2xl mb-1">menu_book</span>
+<span class="text-[10px] font-bold text-center leading-tight">打开阅读</span>
+</button>
+</div>
+<div class="flex justify-between items-center text-[10px] text-on-surface-variant font-bold opacity-60">
+<span class="">上次阅读：昨天 20:10 · 25 分钟</span>
+<span class="bg-white/50 px-2 py-0.5 rounded-full">上次阅读</span>
+</div>
+</section>
+<!-- Section 3: Action Buttons -->
+<section class="grid grid-cols-2 gap-3">
+<button class="accent-green modern-border rounded-xl p-3 flex items-center gap-3 hard-shadow btn-press text-left border bg-accent-green/20" style="background-color: rgb(209, 242, 225); border: 1px solid rgb(31, 31, 31);">
+<div class="w-10 h-10 rounded-full bg-[#7FD6A6] modern-border flex items-center justify-center shrink-0 border">
+<span class="material-symbols-outlined text-white">play_arrow</span>
+</div>
+<div>
+<p class="font-bold text-sm">开始计时</p>
+</div>
+</button>
+<button class="accent-yellow modern-border rounded-xl p-3 flex items-center gap-3 hard-shadow btn-press text-left border bg-accent-yellow/20" style="background-color: rgb(255, 244, 214); border: 1px solid rgb(31, 31, 31);">
+<div class="w-10 h-10 rounded-full bg-[#FFD166] modern-border flex items-center justify-center shrink-0 border">
+<span class="material-symbols-outlined text-white">schedule</span>
+</div>
+<div>
+<p class="font-bold text-sm">手动计时</p>
+</div>
+</button>
+</section>
+<!-- Section 4: My Reading Stats -->
+<section class="bg-white modern-border rounded-xl p-4 space-y-4 hard-shadow border">
+<div class="flex justify-between items-center"><h3 class="font-bold text-sm">我的阅读数据</h3><button class="text-[11px] font-bold text-primary flex items-center gap-0.5">详情<span class="material-symbols-outlined text-xs">chevron_right</span></button></div>
+<div class="grid grid-cols-4 gap-2">
+<div class="text-center p-2 rounded-lg bg-[#F3E8FF]">
+<p class="font-bold text-lg">18<span class="text-xs">h</span> 35<span class="text-xs">m</span></p>
+<p class="text-[9px] text-on-surface-variant font-bold uppercase">累计阅读时长</p>
+</div>
+<div class="text-center p-2 rounded-lg bg-[#E8F9F1]">
+<p class="font-bold text-lg">23<span class="text-xs">次</span></p>
+<p class="text-[9px] text-on-surface-variant font-bold uppercase">阅读次数</p>
+</div>
+<div class="text-center p-2 rounded-lg bg-[#FFF9E6]">
+<p class="font-bold text-lg">42<span class="text-xs">%</span></p>
+<p class="text-[9px] text-on-surface-variant font-bold uppercase">平均进度</p>
+</div>
+<div class="text-center p-2 rounded-lg bg-[#FFEBF0]">
+<p class="font-bold text-lg">12<span class="text-xs">条</span></p>
+<p class="text-[9px] text-on-surface-variant font-bold uppercase">想法/笔记</p>
+</div>
+</div>
+</section>
+<!-- Section 5: Reading Status -->
+<!-- Section 6: Reading Source -->
+<section class="bg-white modern-border rounded-xl p-4 hard-shadow space-y-3 border">
+<div class="flex justify-between items-center">
+<h3 class="font-bold text-sm">阅读来源</h3>
+<span class="text-[10px] font-bold text-on-surface-variant">已导入 1 个文件</span>
+</div>
+<div class="space-y-2">
+<div class="p-3 bg-background modern-border border-dashed rounded-xl flex items-center gap-3 border">
+<div class="w-10 h-10 bg-white modern-border rounded-lg flex items-center justify-center text-primary border">
+<span class="material-symbols-outlined">folder_open</span>
+</div>
+<div class="flex-1">
+<p class="font-bold text-xs">导入本地文件</p>
+<p class="text-[9px] text-on-surface-variant font-bold">支持 EPUB / PDF / MOBI / TXT 等</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+</div>
+<div class="flex items-center gap-3 p-2 rounded-lg bg-[#E8F9F1] border border-on-surface">
+<div class="w-8 h-8 bg-background rounded-lg flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">description</span>
+</div>
+<div class="flex-1 text-left">
+<p class="font-bold text-[11px]">三体全集（全三部）.epub</p>
+<p class="text-[8px] text-on-surface-variant font-bold">2.1 MB • 导入于 2024-07-03</p>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant text-base">more_horiz</button>
+</div>
+</div>
+</section>
+<!-- Section 7: History Timeline -->
+<section class="bg-white modern-border rounded-xl hard-shadow overflow-hidden border">
+<nav class="flex border-on-surface px-4 border-b justify-between"><button class="py-3 px-3 font-bold text-[13px] border-b-2 border-[#8B7CF6] text-[#8B7CF6]">时间轴</button><button class="py-3 px-3 font-bold text-[13px] text-on-surface-variant">阅读历程</button><button class="py-3 px-3 font-bold text-[13px] text-on-surface-variant">高亮 (12)</button><button class="py-3 px-3 font-bold text-[13px] text-on-surface-variant">想法 (4)</button></nav>
+<div class="p-4 space-y-4">
+<div class="flex gap-3 relative">
+<div class="absolute left-[19px] top-10 bottom-[-30px] w-0.5 bg-on-surface/10"></div>
+<div class="z-10 w-10 h-10 modern-border rounded-full flex items-center justify-center shrink-0 accent-purple border bg-accent-purple/20 border-on-surface" style="background-color: #FFDAD6; border: 1px solid #1F1F1F;">
+<span class="material-symbols-outlined text-[18px]">edit_note</span>
+</div>
+<div class="flex-1 pb-4">
+<div class="flex justify-between items-center mb-1">
+<span class="font-bold text-sm">记录第一条想法</span>
+<span class="text-on-surface-variant text-[10px] font-bold">今天 20:10</span>
+</div>
+<div class="modern-border rounded-xl p-3 text-[12px] leading-relaxed italic border-l-[6px] border-l-primary border">
+                        "三体问题的不可预测性是宇宙混沌的基石，刘慈欣通过对混乱与恒定纪元的描写，勾勒出文明挣扎的底色..."
+                    </div>
+<p class="mt-1 text-on-surface-variant text-[10px] font-bold">EPUB • 25 分钟</p>
+</div>
+</div>
+<div class="flex gap-3 relative">
+<div class="absolute left-[19px] top-10 bottom-[-30px] w-0.5 bg-on-surface/10"></div>
+<div class="z-10 w-10 h-10 modern-border rounded-full flex items-center justify-center shrink-0 accent-yellow border bg-accent-yellow/20 border-on-surface" style="background-color: #DDE4DB; border: 1px solid #1F1F1F;">
+<span class="material-symbols-outlined text-[18px]">schedule</span>
+</div>
+<div class="flex-1 pb-4">
+<div class="flex justify-between items-center">
+<span class="font-bold text-sm">开始阅读 第二部 黑暗森林</span>
+<span class="text-on-surface-variant text-[10px] font-bold">今天 14:30</span>
+</div>
+<p class="text-on-surface-variant text-[10px] font-bold">纸质书 • 30 分钟</p>
+</div>
+</div>
+<div class="flex gap-3 relative">
+<div class="z-10 w-10 h-10 modern-border rounded-full flex items-center justify-center shrink-0 accent-green border bg-accent-green/20 border-on-surface" style="background-color: #E1E0FF; border: 1px solid #1F1F1F;">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-center">
+<span class="font-bold text-sm">将本书加入书架</span>
+<span class="text-on-surface-variant text-[10px] font-bold">07-03 09:00</span>
+</div>
+<p class="text-on-surface-variant text-[10px] font-bold">来源：搜索添加</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Quick Actions Grid -->
+<section class="bg-white modern-border rounded-xl p-4 hard-shadow border space-y-3">
+<h3 class="font-bold text-sm">书单 / 收藏</h3>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-accent-purple/20 modern-border rounded-full text-[11px] font-bold border border-on-surface">2026 必读</span>
+<span class="px-3 py-1 bg-accent-green/20 modern-border rounded-full text-[11px] font-bold border border-on-surface">科幻 TOP 10</span>
+<span class="px-3 py-1 bg-accent-yellow/20 modern-border rounded-full text-[11px] font-bold border border-on-surface">夜间阅读</span>
+<button class="w-7 h-7 flex items-center justify-center rounded-full modern-border bg-white btn-press border border-on-surface">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+</section></main>
+<!-- Bottom Navigation (Mobile) -->
+
+
+<div id="snapdom-sandbox" data-snapdom-sandbox="true" aria-hidden="true" style="position: absolute; left: -9999px; top: -9999px; width: 0px; height: 0px; overflow: hidden;"></div></body></html>
