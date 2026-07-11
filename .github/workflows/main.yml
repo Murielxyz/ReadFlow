@@ -12,20 +12,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
       - name: Install dependencies
-        run: cd ReadFlow && npm install
+        run: npm --prefix ReadFlow install
 
       - name: Setup EAS CLI
         run: npm install -g eas-cli
 
       - name: Build APK
+        working-directory: ReadFlow
         run: |
-          cd ReadFlow
           eas build \
             --platform android \
             --profile preview \
@@ -37,6 +32,7 @@ jobs:
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
+        if: success()
         with:
           name: ReadFlow-APK
           path: ReadFlow/app-release.apk
