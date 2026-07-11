@@ -108,9 +108,7 @@ export default function ImportModal({ visible, onClose }: ImportModalProps) {
       // 文件名通过 URL 传递（短字符串，无编码问题）
       if (file.name) params.set('importFileName', file.name);
 
-      resetAndClose();
-
-      resetAndClose();
+      onClose();
       setTimeout(() => {
         router.push(`/add-book?${params.toString()}`);
       }, 300);

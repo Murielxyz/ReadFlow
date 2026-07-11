@@ -59,16 +59,21 @@ export default function TodayScreen() {
   const fetchDailyHighlight = useCallback(async () => {
     try {
       const db = await getDatabase();
-      // 分开查询避免 JOIN 在 expo-sqlite 中失败
-      const [hlRow, allBooks] = await Promise.all([
-        db.getFirstAsync<{ content: string; book_id: string }>('SELECT content, book_id FROM highlights ORDER BY created_at DESC LIMIT 1'),
-        db.getAllAsync<{ id: string; title: string }>('SELECT id, title FROM books'),
-      ]);
-      if (hlRow) {
-        const book = allBooks.find(b => b.id === hlRow.book_id);
-        setDailyHighlight({ content: hlRow.content, bookTitle: book?.title || '未知书籍', bookId: hlRow.book_id });
-      }
-    } catch { /* no highlights yet */ }
+      // 从正在阅读的书里随机取一条高亮
+      const readingBooks = await db.getAllAsync<{ id: string }>("SELECT id FROM books WHERE status = 'reading'");
+      if (readingBooks.length === 0) { setDailyHighlight(null); return; }
+      const bookIds = readingBooks.map(b => b.id);
+      // 取这些书的所有高亮，随机选一条
+      const allHighlights = await db.getAllAsync<{ content: string; book_id: string }>(
+        `SELECT content, book_id FROM highlights WHERE book_id IN (${bookIds.map(() => '?').join(',')}) ORDER BY created_at DESC`,
+        bookIds,
+      );
+      if (allHighlights.length === 0) { setDailyHighlight(null); return; }
+      const pick = allHighlights[Math.floor(Math.random() * allHighlights.length)];
+      const books = await db.getAllAsync<{ id: string; title: string }>('SELECT id, title FROM books');
+      const book = books.find(b => b.id === pick.book_id);
+      setDailyHighlight({ content: pick.content, bookTitle: book?.title || '未知书籍', bookId: pick.book_id });
+    } catch { setDailyHighlight(null); }
   }, []);
 
   // 每次 Tab 获得焦点时刷新数据
@@ -271,21 +276,25 @@ export default function TodayScreen() {
         </View>
 
         {/* ===== 每日阅读高亮 ===== */}
-        {dailyHighlight && (
-          <TouchableOpacity
-            style={[styles.highlightCard, { backgroundColor: t.paper.white, borderColor: t.outline.standard }]}
-            activeOpacity={0.8}
-            onPress={() => router.push(`/book/${dailyHighlight.bookId}`)}
-          >
-            <View style={styles.highlightIconRow}>
-              <Ionicons name="color-palette-outline" size={16} color={t.accent.primary} />
+        <TouchableOpacity
+          style={[styles.highlightCard, { backgroundColor: t.paper.white, borderColor: t.outline.standard }]}
+          activeOpacity={dailyHighlight ? 0.8 : 1}
+          onPress={() => dailyHighlight && router.push(`/book/${dailyHighlight.bookId}`)}
+        >
+          <View style={styles.highlightIconRow}>
+            <Ionicons name="color-palette-outline" size={22} color={t.accent.primary} />
+          </View>
+          {dailyHighlight ? (
+            <>
               <Text style={[styles.highlightLabel, { color: t.ink.tertiary }]}>今日高亮 · 《{dailyHighlight.bookTitle}》</Text>
-            </View>
-            <Text style={[styles.highlightText, { color: t.ink.secondary }]} numberOfLines={3}>
-              "{dailyHighlight.content}"
-            </Text>
-          </TouchableOpacity>
-        )}
+              <Text style={[styles.highlightText, { color: t.ink.secondary }]} numberOfLines={3}>
+                "{dailyHighlight.content}"
+              </Text>
+            </>
+          ) : (
+            <Text style={[styles.highlightText, { color: t.ink.tertiary }]}>今天还没有高亮，去阅读吧</Text>
+          )}
+        </TouchableOpacity>
 
         <View style={{ height: 32 }} />
       </ScrollView>

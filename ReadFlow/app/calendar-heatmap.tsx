@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
   dayCell: { flex: 1, aspectRatio: 1, alignItems: 'center', justifyContent: 'center', margin: 2 },
   dayText: { fontFamily: 'PlusJakartaSans_500Medium', fontSize: 12, fontWeight: '500' },
   yearGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.md },
-  yearMonthCell: { width: '30%', borderRadius: radii.lg, borderWidth: 1, alignItems: 'center', padding: spacing.sm, paddingVertical: spacing.md, ...softShadow },
+  yearMonthCell: { width: '47%', borderRadius: radii.lg, borderWidth: 1, alignItems: 'center', padding: spacing.sm, paddingVertical: spacing.md, ...softShadow },
   yearMonthLabel: { fontFamily: 'PlusJakartaSans_700Bold', fontSize: 13, fontWeight: '700', marginBottom: spacing.xs },
   yearMonthStats: { fontFamily: 'PlusJakartaSans_500Medium', fontSize: 10, fontWeight: '500', marginTop: spacing.xs },
   miniCalGrid: { flexDirection: 'row', flexWrap: 'wrap', width: '100%' },

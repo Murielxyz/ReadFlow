@@ -89,6 +89,8 @@ export default function MyReadingScreen() {
 
   const filtered = useMemo(() => {
     let result = bookData;
+    // 排除待读且无计时记录的书
+    result = result.filter((b) => !(b.status === 'to_read' && b.durationMs === 0));
     if (statusTab !== 'all') result = result.filter((b) => b.status === statusTab);
     if (searchText.trim()) {
       const q = searchText.trim().toLowerCase();

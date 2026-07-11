@@ -365,6 +365,8 @@ const styles = StyleSheet.create({
     borderRadius: radii.md,
     borderWidth: 1,
     paddingHorizontal: spacing.md,
+    paddingVertical: 0,
+    textAlignVertical: 'center',
     fontFamily: 'PlusJakartaSans_800ExtraBold',
     fontSize: 18,
     fontWeight: '800',

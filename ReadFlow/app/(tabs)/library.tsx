@@ -50,7 +50,7 @@ export default function LibraryScreen() {
   const [filterVisible, setFilterVisible] = useState(false);
   const [sortVisible, setSortVisible] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
-  const [gridColumns] = useState(3);
+  const [gridColumns] = useState(2);
   const [importVisible, setImportVisible] = useState(false);
   const [contextBookId, setContextBookId] = useState<string | null>(null);
   const [menuPosition, setMenuPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });

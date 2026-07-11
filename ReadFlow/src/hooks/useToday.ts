@@ -84,17 +84,22 @@ export function useToday(): TodayData {
   const [currentBookPageTotal, setCurrentBookPageTotal] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // 最后一次打开的书籍：排除弃读书籍
+  // Hero 卡片书籍：排除弃读和待读，按最近阅读时间排序
   const currentBook = (() => {
-    const activeBooks = books.filter((b) => b.status !== 'abandoned');
+    const activeBooks = books.filter((b) => b.status !== 'abandoned' && b.status !== 'to_read');
     if (activeBooks.length === 0) return null;
-    const booksWithActivity = activeBooks.filter(
-      (b) => b.status === 'reading' || b.status === 'finished' || recentTimeline.some((t) => t.bookId === b.id)
-    );
-    if (booksWithActivity.length === 0) {
-      return activeBooks.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())[0];
+    // 从时间线中取每本书的最近一次活动时间
+    const latestByBook = new Map<string, string>();
+    for (const t of recentTimeline) {
+      const existing = latestByBook.get(t.bookId);
+      if (!existing || t.startTime > existing) latestByBook.set(t.bookId, t.startTime);
     }
-    return booksWithActivity.sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime())[0];
+    const withTime = activeBooks
+      .filter(b => latestByBook.has(b.id))
+      .sort((a, b) => latestByBook.get(b.id)!.localeCompare(latestByBook.get(a.id)!));
+    if (withTime.length > 0) return withTime[0];
+    // 无时间线数据时，取最近更新的
+    return activeBooks.sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime())[0];
   })();
 
   const hasAnyBooks = books.length > 0;
@@ -236,15 +241,18 @@ export function useToday(): TodayData {
       // ------ 当前书籍总阅读时长 + 页码 ------
       // 在 fetchTodayData 内重新选取 hero 书籍，确保与最新的 recentTimeline 同步
       const heroBook = (() => {
-        const activeBooks = books.filter((b: Book) => b.status !== 'abandoned');
+        const activeBooks = books.filter((b: Book) => b.status !== 'abandoned' && b.status !== 'to_read');
         if (activeBooks.length === 0) return null;
-        const withActivity = activeBooks.filter(
-          (b: Book) => b.status === 'reading' || b.status === 'finished' || recentTimeline.some((t: TodayTimelineEntry) => t.bookId === b.id)
-        );
-        if (withActivity.length === 0) {
-          return activeBooks.sort((a: Book, b: Book) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())[0];
+        const latestByBook = new Map<string, string>();
+        for (const t of recentTimeline) {
+          const existing = latestByBook.get(t.bookId);
+          if (!existing || t.startTime > existing) latestByBook.set(t.bookId, t.startTime);
         }
-        return withActivity.sort((a: Book, b: Book) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime())[0];
+        const withTime = activeBooks
+          .filter(b => latestByBook.has(b.id))
+          .sort((a, b) => latestByBook.get(b.id)!.localeCompare(latestByBook.get(a.id)!));
+        if (withTime.length > 0) return withTime[0];
+        return null;
       })();
       if (heroBook) {
         // 取原始行，JS 计算总时长（避免 SUM 失败）

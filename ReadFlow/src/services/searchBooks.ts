@@ -133,7 +133,7 @@ async function searchGoogleBooks(
   limit: number
 ): Promise<SearchResult[]> {
   const params = new URLSearchParams({
-    q: query,
+    q: `intitle:${query}`,
     langRestrict: 'zh-CN',
     maxResults: String(Math.min(limit, 40)),
     key: GOOGLE_BOOKS_API_KEY,

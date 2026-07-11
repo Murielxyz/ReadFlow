@@ -11,11 +11,13 @@ import { useLocalSearchParams } from 'expo-router';
 import { safeGoBack } from '../../src/utils/navigation';
 import { getDatabase } from '../../src/db/database';
 import { useReadingStore } from '../../src/stores/useReadingStore';
+import { useHighlightStore } from '../../src/stores/useHighlightStore';
+import { useNoteStore } from '../../src/stores/useNoteStore';
 import { MobileDocumentEngine } from '@papyrus-sdk/engine-native';
 import { Viewer } from '@papyrus-sdk/ui-react-native';
 import { papyrusEvents } from '@papyrus-sdk/core';
 import { PapyrusEventType } from '@papyrus-sdk/types';
-import type { DocumentType } from '@papyrus-sdk/types';
+import type { DocumentType, Annotation } from '@papyrus-sdk/types';
 import type { ReadingSource } from '../../src/models';
 import { spacing } from '../../src/theme';
 import { useColors } from '../../src/stores/useThemeStore';
@@ -44,6 +46,13 @@ export default function ReaderScreen() {
   const { bookId } = useLocalSearchParams<{ bookId: string }>();
   const t = useColors();
   const addManualLog = useReadingStore((s) => s.addManualLog);
+  const addHighlight = useHighlightStore((s) => s.addHighlight);
+  const updateHighlight = useHighlightStore((s) => s.updateHighlight);
+  const deleteHighlight = useHighlightStore((s) => s.deleteHighlight);
+  const addNote = useNoteStore((s) => s.addNote);
+
+  // Papyrus annotation ID → ReadFlow DB ID 映射（用于更新/删除）
+  const annotationMap = useRef(new Map<string, { dbId: string; type: 'highlight' | 'note' }>());
 
   const [source, setSource] = useState<ReadingSource | null>(null);
   const [loading, setLoading] = useState(true);
@@ -109,17 +118,76 @@ export default function ReaderScreen() {
     return unsub;
   }, [pageCount, source?.id]);
 
-  // 退出 → 记录时长
+  // 监听 ANNOTATION_CREATED → 同步到 ReadFlow DB（高亮/笔记）
+  useEffect(() => {
+    if (!source) return;
+    const bookId = source.book_id;
+
+    const subCreated = papyrusEvents.on(PapyrusEventType.ANNOTATION_CREATED, async (payload: { annotation: Annotation }) => {
+      const a = payload.annotation;
+      try {
+        // 高亮/下划线/波浪线 → 存为 highlight
+        if (a.type === 'highlight' || a.type === 'underline' || a.type === 'squiggly') {
+          const hl = await addHighlight({
+            book_id: bookId,
+            content: a.content || '',
+            color: a.type === 'highlight' ? '#F5A623' : a.type === 'underline' ? '#4A90D9' : '#50C878',
+            page_number: a.pageIndex + 1,
+          });
+          annotationMap.current.set(a.id, { dbId: hl.id, type: 'highlight' });
+        }
+        // 文字/评论 → 存为 note
+        else if (a.type === 'text' || a.type === 'comment') {
+          const note = await addNote({
+            book_id: bookId,
+            content: a.content || '',
+            page_number: a.pageIndex + 1,
+          });
+          annotationMap.current.set(a.id, { dbId: note.id, type: 'note' });
+        }
+      } catch (e) { console.warn('Annotation sync error:', e); }
+    });
+
+    const subUpdated = papyrusEvents.on(PapyrusEventType.ANNOTATION_UPDATED, async (payload: { annotation: Annotation }) => {
+      const a = payload.annotation;
+      const mapped = annotationMap.current.get(a.id);
+      if (!mapped) return;
+      try {
+        if (mapped.type === 'highlight') {
+          await updateHighlight(mapped.dbId, {
+            content: a.content || undefined,
+            page_number: a.pageIndex + 1,
+          });
+        }
+      } catch (e) { console.warn('Annotation update error:', e); }
+    });
+
+    const subDeleted = papyrusEvents.on(PapyrusEventType.ANNOTATION_DELETED, async (payload: { annotationId: string }) => {
+      const mapped = annotationMap.current.get(payload.annotationId);
+      if (!mapped) return;
+      try {
+        if (mapped.type === 'highlight') {
+          await deleteHighlight(mapped.dbId);
+        }
+        annotationMap.current.delete(payload.annotationId);
+      } catch (e) { console.warn('Annotation delete error:', e); }
+    });
+
+    return () => { subCreated(); subUpdated(); subDeleted(); };
+  }, [source?.book_id, addHighlight, updateHighlight, deleteHighlight, addNote]);
+
+  // 退出 → 记录时长（关联到阅读来源 + 当前进度页）
   const handleExit = useCallback(() => {
     const totalMs = Date.now() - startTimeRef.current;
     if (totalMs >= 10000 && source) {
+      const currentPage = pageCount > 0 ? Math.round((source.current_page / 100) * pageCount) : undefined;
       addManualLog(
         source.book_id, totalMs, undefined, source.label,
-        undefined, undefined, false,
+        currentPage, undefined, false, source.id,
       ).catch((e) => console.warn('Reader reading log save failed:', e));
     }
     safeGoBack();
-  }, [source, addManualLog]);
+  }, [source, addManualLog, pageCount]);
 
   // ===== 加载中 =====
   if (loading) {

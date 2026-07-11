@@ -8,6 +8,7 @@ import {
   Modal,
   ScrollView,
   Alert,
+  Dimensions,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
@@ -416,7 +417,11 @@ export default function BookMenuSheet({
     <Modal visible={visible} transparent animationType="fade" onRequestClose={handleClose} statusBarTranslucent>
       <TouchableOpacity style={styles.backdrop} activeOpacity={1} onPress={handleClose} />
       {/* 菜单卡片 — 三点按钮处下拉 */}
-      <View style={[styles.sheet, { backgroundColor: t.paper.primary, borderColor: t.outline.standard, top: anchorY - 20, left: anchorX - 260 }]}>
+      <View style={[styles.sheet, {
+        backgroundColor: t.paper.primary, borderColor: t.outline.standard,
+        top: Math.min(anchorY - 20, Dimensions.get('window').height - 420),
+        right: Math.max(Dimensions.get('window').width - anchorX, 10),
+      }]}>
         {subPanel === 'collection' || subPanel === 'create' ? renderCollectionPanel() : renderMainMenu()}
       </View>
     </Modal>

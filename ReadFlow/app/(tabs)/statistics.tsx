@@ -83,8 +83,8 @@ export default function StatisticsScreen() {
       const [sessAll, manAll, notesAll, highlightsAll, allBooks] = await Promise.all([
         db.getAllAsync<{ start_time: string; duration_ms: number; book_id: string }>('SELECT start_time, duration_ms, book_id FROM reading_sessions'),
         db.getAllAsync<{ logged_at: string; duration_ms: number; book_id: string }>('SELECT logged_at, duration_ms, book_id FROM manual_logs'),
-        db.getFirstAsync<{ cnt: number }>('SELECT COUNT(*) as cnt FROM notes'),
-        db.getFirstAsync<{ cnt: number }>('SELECT COUNT(*) as cnt FROM highlights'),
+        db.getAllAsync<{ created_at: string }>('SELECT created_at FROM notes'),
+        db.getAllAsync<{ created_at: string }>('SELECT created_at FROM highlights'),
         db.getAllAsync<Book>('SELECT * FROM books'),
       ]);
 
@@ -98,7 +98,10 @@ export default function StatisticsScreen() {
       for (const m of fMan) daySet.add(m.logged_at.slice(0, 10));
       const finishedCount = activeTab === 'total' ? allBooks.filter(b => b.status === 'finished').length : 0;
 
-      setStats({ completedBooks: finishedCount, totalMs, readingDays: daySet.size, notesCount: (notesAll?.cnt ?? 0) + (highlightsAll?.cnt ?? 0) });
+      // 笔记数按时间范围过滤（复用上方 inRange）
+      const filteredNotes = notesAll.filter((n: any) => inRange(n.created_at || ''));
+      const filteredHighlights = highlightsAll.filter((h: any) => inRange(h.created_at || ''));
+      setStats({ completedBooks: finishedCount, totalMs, readingDays: daySet.size, notesCount: filteredNotes.length + filteredHighlights.length });
 
       // 365天热力图 — JS 构建（总 Tab 使用）
       const today2 = new Date();

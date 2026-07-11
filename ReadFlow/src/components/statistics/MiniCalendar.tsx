@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   calCard: { borderRadius: radii.lg, borderWidth: 1, padding: spacing.sm, marginHorizontal: 0 },
   // Week
   weekRow: { flexDirection: 'row', gap: 4 },
-  weekCell: { flex: 1, borderRadius: radii.md, borderWidth: 1, padding: 0, alignItems: 'center', aspectRatio: 0.7, backgroundColor: '#FAFAF8', overflow: 'hidden' },
+  weekCell: { flex: 1, borderRadius: radii.md, borderWidth: 1, padding: 0, alignItems: 'center', aspectRatio: 0.65, minWidth: 44, backgroundColor: '#FAFAF8', overflow: 'hidden' },
   weekLabel: { fontFamily: 'PlusJakartaSans_600SemiBold', fontSize: 9, fontWeight: '600', backgroundColor: 'rgba(124,107,255,0.08)', paddingVertical: 1, paddingHorizontal: 4, borderRadius: 4, position: 'absolute', top: 2, zIndex: 2 },
   weekDay: { fontFamily: 'PlusJakartaSans_700Bold', fontSize: 11, fontWeight: '700', position: 'absolute', bottom: 2, zIndex: 2 },
   weekCoverWrap: { flex: 1, width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 },

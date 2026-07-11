@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { View, Text, TouchableOpacity, Platform } from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import GlobalTimerBubble from '../src/components/reader/GlobalTimerBubble';
 import {
@@ -127,13 +128,15 @@ export default function RootLayout() {
   }
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <StatusBar style={paper.primary === '#1A1A1C' ? 'light' : 'dark'} />
-      <Stack
-        screenOptions={{
-          headerShown: false,
-          contentStyle: { backgroundColor: paper.primary },
-        }}
+    <SafeAreaProvider>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: paper.primary }} edges={['top', 'left', 'right']}>
+          <StatusBar style={paper.primary === '#1A1A1C' ? 'light' : 'dark'} />
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              contentStyle: { backgroundColor: paper.primary },
+            }}
       >
         <Stack.Screen name="(tabs)" />
         <Stack.Screen
@@ -185,6 +188,8 @@ export default function RootLayout() {
       </Stack>
       {/* 全局悬浮计时器气泡 — 在所有页面（除 reader/timer 外）显示 */}
       <GlobalTimerBubble />
-    </GestureHandlerRootView>
+        </SafeAreaView>
+      </GestureHandlerRootView>
+    </SafeAreaProvider>
   );
 }
