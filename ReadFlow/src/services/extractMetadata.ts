@@ -1,10 +1,44 @@
 import { Platform } from 'react-native';
 
-// expo-file-system 仅原生可用
+// expo-file-system legacy API（readAsStringAsync）
 let FileSystem: any = null;
 if (Platform.OS !== 'web') {
-  try { FileSystem = require('expo-file-system'); } catch {}
+  try { FileSystem = require('expo-file-system/legacy'); } catch {}
 }
+
+// Hermes (React Native) 没有 atob/btoa，使用 polyfill
+const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+function atobPolyfill(input: string): string {
+  let str = '';
+  let i = 0;
+  input = input.replace(/[^A-Za-z0-9+/=]/g, '');
+  while (i < input.length) {
+    const e1 = chars.indexOf(input[i++]);
+    const e2 = chars.indexOf(input[i++]);
+    const e3 = chars.indexOf(input[i++]);
+    const e4 = chars.indexOf(input[i++]);
+    str += String.fromCharCode((e1 << 2) | (e2 >> 4));
+    if (e3 !== 64) str += String.fromCharCode(((e2 & 15) << 4) | (e3 >> 2));
+    if (e4 !== 64) str += String.fromCharCode(((e3 & 3) << 6) | e4);
+  }
+  return decodeURIComponent(encodeURIComponent(str));
+}
+function btoaPolyfill(input: string): string {
+  let str = '';
+  let i = 0;
+  while (i < input.length) {
+    const c1 = input.charCodeAt(i++) & 0xff;
+    str += chars.charAt(c1 >> 2);
+    if (i === input.length) { str += chars.charAt((c1 & 3) << 4) + '=='; break; }
+    const c2 = input.charCodeAt(i++);
+    if (i === input.length) { str += chars.charAt((c1 & 3) << 4 | (c2 & 0xf0) >> 4) + chars.charAt((c2 & 15) << 2) + '='; break; }
+    const c3 = input.charCodeAt(i++);
+    str += chars.charAt((c1 & 3) << 4 | (c2 & 0xf0) >> 4) + chars.charAt((c2 & 15) << 2 | (c3 & 0xc0) >> 6) + chars.charAt(c3 & 63);
+  }
+  return str;
+}
+const atob = (typeof globalThis.atob === 'function') ? globalThis.atob.bind(globalThis) : atobPolyfill;
+const btoa = (typeof globalThis.btoa === 'function') ? globalThis.btoa.bind(globalThis) : btoaPolyfill;
 
 export interface EpubMetadata {
   title?: string;

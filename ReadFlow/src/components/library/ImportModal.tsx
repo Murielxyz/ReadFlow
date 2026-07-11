@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as DocumentPicker from 'expo-document-picker';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystemLegacy from 'expo-file-system/legacy';
 import { useRouter } from 'expo-router';
 import { spacing, radii } from '../../theme';
 import { softShadow } from '../../theme/shadows';
@@ -81,14 +81,14 @@ export default function ImportModal({ visible, onClose }: ImportModalProps) {
       // 复制文件到 App 内部存储（Android content:// URI → 永久文件路径）
       let persistentUri = file.uri;
       try {
-        const dir = new FileSystem.Directory(FileSystem.Paths.document, 'books');
-        dir.create();
         const safeName = file.name.replace(/[^a-zA-Z0-9一-鿿._-]/g, '_');
-        const dest = new FileSystem.File(dir, `${Date.now()}_${safeName}`);
-        const src = new FileSystem.File(file.uri);
-        src.copy(dest);
-        persistentUri = dest.uri;
-      } catch (e) { /* fallback: use original URI */ console.warn('File copy failed:', e); }
+        const dest = `${FileSystemLegacy.documentDirectory}books/${Date.now()}_${safeName}`;
+        // 确保目录存在
+        const dirInfo = await FileSystemLegacy.getInfoAsync(`${FileSystemLegacy.documentDirectory}books/`);
+        if (!dirInfo.exists) await FileSystemLegacy.makeDirectoryAsync(`${FileSystemLegacy.documentDirectory}books/`, { intermediates: true });
+        await FileSystemLegacy.copyAsync({ from: file.uri, to: dest });
+        persistentUri = dest;
+      } catch (e) { console.warn('File copy failed, using original URI:', e); }
 
       let prefillTitle = titleFromName;
       let prefillAuthor = '';

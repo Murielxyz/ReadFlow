@@ -412,8 +412,9 @@ export default function BookMenuSheet({
       {/* 菜单卡片 — 三点按钮处下拉 */}
       <View style={[styles.sheet, {
         backgroundColor: t.paper.primary, borderColor: t.outline.standard,
-        top: Math.min(anchorY - 20, Dimensions.get('window').height - 420),
-        right: Math.max(Dimensions.get('window').width - anchorX, 10),
+        top: '50%',
+        left: '50%',
+        transform: [{ translateX: -140 }, { translateY: -200 }],
       }]}>
         {subPanel === 'collection' || subPanel === 'create' ? renderCollectionPanel() : renderMainMenu()}
       </View>

@@ -62,9 +62,8 @@ export default function TabLayout() {
           backgroundColor: paper.white,
           borderTopWidth: 1,
           borderTopColor: outline.standard,
-          paddingTop: 4,
-          paddingBottom: 4,
-          height: 60,
+          paddingTop: 2,
+          height: 52,
           elevation: 0,
           shadowOpacity: 0,
         },
@@ -72,7 +71,6 @@ export default function TabLayout() {
           fontFamily: 'PlusJakartaSans_600SemiBold',
           fontSize: 10,
           fontWeight: '600',
-          marginTop: 2,
         },
         tabBarButton: (props) => <TabBarButton {...props} />,
         headerStyle: {
@@ -92,7 +90,7 @@ export default function TabLayout() {
         name="today"
         options={{
           title: '今日',
-          headerShown: true,
+          headerShown: false,
           tabBarIcon: ({ focused, color, size }) => (
             <Ionicons
               name={focused ? 'today' : 'today-outline'}
@@ -108,7 +106,7 @@ export default function TabLayout() {
         name="library"
         options={{
           title: '书架',
-          headerShown: true,
+          headerShown: false,
           tabBarIcon: ({ focused, color, size }) => (
             <Ionicons
               name={focused ? 'library' : 'library-outline'}
@@ -124,7 +122,7 @@ export default function TabLayout() {
         name="statistics"
         options={{
           title: '统计',
-          headerShown: true,
+          headerShown: false,
           tabBarIcon: ({ focused, color, size }) => (
             <Ionicons
               name={focused ? 'stats-chart' : 'stats-chart-outline'}
@@ -140,7 +138,7 @@ export default function TabLayout() {
         name="profile"
         options={{
           title: '我的',
-          headerShown: true,
+          headerShown: false,
           tabBarIcon: ({ focused, color, size }) => (
             <Ionicons
               name={focused ? 'person' : 'person-outline'}

@@ -43,7 +43,7 @@ function detectDocumentType(fileName?: string | null): DocumentType {
  * - 退出时 >10s 自动记录阅读时长
  */
 export default function ReaderScreen() {
-  const { bookId } = useLocalSearchParams<{ bookId: string }>();
+  const { sourceId } = useLocalSearchParams<{ sourceId: string }>();
   const t = useColors();
   const addManualLog = useReadingStore((s) => s.addManualLog);
   const addHighlight = useHighlightStore((s) => s.addHighlight);
@@ -70,7 +70,7 @@ export default function ReaderScreen() {
         const db = await getDatabase();
         const row = await db.getFirstAsync<ReadingSource>(
           'SELECT * FROM reading_sources WHERE id = ?',
-          [bookId],
+          [sourceId],
         );
         if (cancelled) return;
         if (!row) {
@@ -101,7 +101,7 @@ export default function ReaderScreen() {
       }
     })();
     return () => { cancelled = true; };
-  }, [bookId]);
+  }, [sourceId]);
 
   // 监听 PAGE_CHANGED → 实时更新进度
   useEffect(() => {

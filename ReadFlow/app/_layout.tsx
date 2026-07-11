@@ -148,7 +148,7 @@ export default function RootLayout() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="reader/[bookId]"
+          name="reader/[sourceId]"
           options={{
             presentation: 'fullScreenModal',
             headerShown: false,

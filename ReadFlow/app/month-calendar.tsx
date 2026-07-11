@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
   calCard: { borderRadius: radii.xl, borderWidth: 1, padding: spacing.md, marginTop: spacing.md, ...softShadow },
   wkRow: { flexDirection: 'row' },
   wkHeader: { flex: 1, textAlign: 'center', fontFamily: 'PlusJakartaSans_600SemiBold', fontSize: 11, fontWeight: '600', marginBottom: spacing.sm, paddingVertical: spacing.xs, backgroundColor: 'rgba(124,107,255,0.08)', borderRadius: 4 },
-  dayCell: { flex: 1, aspectRatio: 1, padding: 2, overflow: 'hidden' },
+  dayCell: { flex: 1, aspectRatio: 1, padding: 1, overflow: 'hidden', minHeight: 44 },
   dayNum: { fontFamily: 'PlusJakartaSans_500Medium', fontSize: 10, fontWeight: '500', position: 'absolute', top: 1, left: 3, zIndex: 2 },
   gridCovers: { flex: 1, width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, flexDirection: 'row', flexWrap: 'wrap' },
   miniCover: { width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, borderRadius: 4, resizeMode: 'cover' },

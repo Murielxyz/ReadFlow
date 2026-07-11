@@ -113,7 +113,7 @@ export default function RootLayout() {
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="book/[id]" options={{ headerShown: false }} />
         <Stack.Screen name="timer" options={{ headerShown: false }} />
-        <Stack.Screen name="reader/[bookId]" options={{ presentation: 'fullScreenModal', headerShown: false }} />
+        <Stack.Screen name="reader/[sourceId]" options={{ presentation: 'fullScreenModal', headerShown: false }} />
         <Stack.Screen name="add-book" options={{ presentation: 'modal', headerShown: false }} />
         <Stack.Screen name="my-reading" options={{ headerShown: false }} />
         <Stack.Screen name="collection-manage" options={{ headerShown: false }} />
