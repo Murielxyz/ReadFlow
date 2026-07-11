@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as DocumentPicker from 'expo-document-picker';
+import * as FileSystem from 'expo-file-system';
 import { useRouter } from 'expo-router';
 import { spacing, radii } from '../../theme';
 import { softShadow } from '../../theme/shadows';
@@ -77,6 +78,18 @@ export default function ImportModal({ visible, onClose }: ImportModalProps) {
 
       setExtracting(true);
 
+      // 复制文件到 App 内部存储（Android content:// URI → 永久文件路径）
+      let persistentUri = file.uri;
+      try {
+        const dir = new FileSystem.Directory(FileSystem.Paths.document, 'books');
+        dir.create();
+        const safeName = file.name.replace(/[^a-zA-Z0-9一-鿿._-]/g, '_');
+        const dest = new FileSystem.File(dir, `${Date.now()}_${safeName}`);
+        const src = new FileSystem.File(file.uri);
+        src.copy(dest);
+        persistentUri = dest.uri;
+      } catch (e) { /* fallback: use original URI */ console.warn('File copy failed:', e); }
+
       let prefillTitle = titleFromName;
       let prefillAuthor = '';
       let prefillDesc = '';
@@ -85,7 +98,7 @@ export default function ImportModal({ visible, onClose }: ImportModalProps) {
       // EPUB: 尝试提取元数据
       if (isEpub) {
         try {
-          const metadata = await extractEpubMetadata(file.uri);
+          const metadata = await extractEpubMetadata(persistentUri);
           if (metadata) {
             prefillTitle = metadata.title || titleFromName;
             prefillAuthor = metadata.author || '';
@@ -95,8 +108,8 @@ export default function ImportModal({ visible, onClose }: ImportModalProps) {
         } catch { /* fall through */ }
       }
 
-      // 将文件 URI 写入模块缓存（绕过 URLSearchParams 对 blob URI 的编码问题）
-      importFileCache.uri = file.uri;
+      // 使用永久路径（而非 content:// 临时 URI）
+      importFileCache.uri = persistentUri;
       importFileCache.name = file.name;
 
       // 构建 URL 参数（文件数据走缓存，不经过 URL）

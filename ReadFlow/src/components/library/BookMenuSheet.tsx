@@ -61,7 +61,7 @@ export default function BookMenuSheet({
   const createCollection = useCollectionStore((s) => s.createCollection);
 
   // 展开的子面板: null = 主菜单, 'collection' = 书单列表, 'create' = 创建新书单
-  const [subPanel, setSubPanel] = useState<null | 'collection' | 'create'>(null);
+  const [subPanel, setSubPanel] = useState<null | 'collection' | 'create' | 'status'>(null);
   const [newCollName, setNewCollName] = useState('');
   const [savingColl, setSavingColl] = useState(false);
   // 待保存的选中书单集合（本地状态，点击"保存"后统一提交）
@@ -253,38 +253,31 @@ export default function BookMenuSheet({
         <Ionicons name="chevron-forward" size={16} color={t.ink.tertiary} />
       </TouchableOpacity>
 
-      {/* 标记状态 */}
-      <View style={[styles.statusSection, { borderBottomColor: t.outline.standard }]}>
-        <View style={styles.statusLabel}>
-          <Ionicons name="bookmark-outline" size={20} color={t.ink.secondary} />
-          <Text style={[styles.itemText, { color: t.ink.primary }]}>标记为...</Text>
-        </View>
-        <View style={styles.statusChipRow}>
+      {/* 标记状态 — 二级子菜单 */}
+      {subPanel === 'status' ? (
+        <View style={[styles.subPanel, { borderBottomColor: t.outline.standard }]}>
+          <TouchableOpacity style={[styles.subBack, { borderBottomColor: t.outline.standard }]} onPress={() => setSubPanel(null)} activeOpacity={0.6}>
+            <Ionicons name="chevron-back" size={18} color={t.accent.primary} />
+            <Text style={[styles.subBackText, { color: t.accent.primary }]}>返回</Text>
+          </TouchableOpacity>
           {BOOK_STATUS_OPTIONS.map((opt) => {
             const active = book.status === opt.value;
-            const chipColor =
-              opt.value === 'reading' ? t.status.reading :
-              opt.value === 'finished' ? t.status.finished :
-              t.status.toRead;
+            const chipColor = opt.value === 'reading' ? t.status.reading : opt.value === 'finished' ? t.status.finished : t.status.toRead;
             return (
-              <TouchableOpacity
-                key={opt.value}
-                style={[
-                  styles.statusChip,
-                  { borderColor: active ? chipColor : t.outline.standard },
-                  active && { backgroundColor: chipColor + '18' },
-                ]}
-                onPress={() => handleStatusChange(opt.value)}
-                activeOpacity={0.7}
-              >
-                <Text style={[styles.statusChipText, { color: active ? chipColor : t.ink.secondary }]}>
-                  {opt.label}
-                </Text>
+              <TouchableOpacity key={opt.value} style={[styles.subItem, { borderBottomColor: t.outline.standard }]} onPress={() => { handleStatusChange(opt.value); setSubPanel(null); }} activeOpacity={0.6}>
+                <Text style={[styles.subItemText, { color: active ? chipColor : t.ink.primary }]}>{opt.label}</Text>
+                {active && <Ionicons name="checkmark" size={16} color={chipColor} />}
               </TouchableOpacity>
             );
           })}
         </View>
-      </View>
+      ) : (
+        <TouchableOpacity style={[styles.item, { borderBottomColor: t.outline.standard }]} onPress={() => setSubPanel('status')} activeOpacity={0.6}>
+          <Ionicons name="bookmark-outline" size={20} color={t.ink.secondary} />
+          <Text style={[styles.itemText, { color: t.ink.primary }]}>标记为...</Text>
+          <Ionicons name="chevron-forward" size={16} color={t.ink.tertiary} />
+        </TouchableOpacity>
+      )}
 
       {/* 移除 */}
       <TouchableOpacity
@@ -487,6 +480,13 @@ const styles = StyleSheet.create({
   deleteItem: {
     borderBottomWidth: 0,
   },
+
+  // ---- 子面板 ----
+  subPanel: { paddingVertical: spacing.sm },
+  subBack: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, paddingHorizontal: spacing.lg, paddingVertical: spacing.md, borderBottomWidth: StyleSheet.hairlineWidth },
+  subBackText: { fontFamily: 'PlusJakartaSans_600SemiBold', fontSize: 14, fontWeight: '600' },
+  subItem: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: spacing.lg, paddingVertical: spacing.md, borderBottomWidth: StyleSheet.hairlineWidth },
+  subItemText: { fontFamily: 'PlusJakartaSans_600SemiBold', fontSize: 14, fontWeight: '600' },
 
   // ---- 状态 ----
   statusSection: {

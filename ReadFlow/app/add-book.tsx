@@ -151,35 +151,7 @@ importFileCache.name = undefined;
     return () => { cancelled = true; };
   }, [isImport, importReady, importFileUri]);
 
-  // 搜索预填模式：立即创建书籍，直接进入编辑模式（标签 & 书单立即可用）
-  const [prefillReady, setPrefillReady] = useState(false);
-  useEffect(() => {
-    if (!isPrefill || prefillReady || !prefillTitle) return;
-    let cancelled = false;
-    (async () => {
-      try {
-        const created = await addBook({
-          title: prefillTitle || '未命名书籍',
-          author: prefillAuthor || undefined,
-          publisher: prefillPublisher || undefined,
-          description: searchDescriptionCache.text || undefined,
-          page_count: prefillPageCount ? parseInt(prefillPageCount, 10) || undefined : undefined,
-          status: 'to_read',
-          cover_url: prefillCoverUrl || undefined,
-          isbn: prefillIsbn || undefined,
-        });
-        // 清除缓存
-        delete searchDescriptionCache.text;
-        if (!cancelled) {
-          setAutoCreatedBookId(created.id);
-          setPrefillReady(true);
-        }
-      } catch (e) {
-        console.warn('Auto-create book for prefill failed:', e);
-      }
-    })();
-    return () => { cancelled = true; };
-  }, [isPrefill, prefillReady, prefillTitle]);
+  // 搜索预填模式：仅预填表单，不自动创建书籍（预览模式）
 
   // 预填元数据（编辑模式 / 搜索预填 / 导入预填）
   useEffect(() => {
@@ -195,10 +167,13 @@ importFileCache.name = undefined;
         setRating(book.rating ?? null);
         setChapter('');
         setPageCount(book.page_count != null ? String(book.page_count) : '');
-        if (book.category === 'audiobook') setBookFormat('audiobook');
-        else if (book.isbn) setBookFormat('ebook');
-        else if (actualEditBookId === autoCreatedBookId) setBookFormat('ebook'); // 导入的本地电子书
-        else setBookFormat('physical');
+        // 仅首次加载时设置格式，避免保存后重新计算导致跳动
+        if (bookFormat === null) {
+          if (book.category === 'audiobook') setBookFormat('audiobook');
+          else if (book.isbn) setBookFormat('ebook');
+          else if (actualEditBookId === autoCreatedBookId) setBookFormat('ebook');
+          else setBookFormat('physical');
+        }
         fetchBookTags(actualEditBookId);
         fetchBookCollections(actualEditBookId);
       }
@@ -206,11 +181,11 @@ importFileCache.name = undefined;
       setTitle(prefillTitle ?? '');
       setAuthor(prefillAuthor ?? '');
       setPublisher(prefillPublisher ?? '');
-      setDescription(prefillDescription ?? '');
+      setDescription(prefillDescription || searchDescriptionCache.text || '');
       setCoverUri(prefillCoverUrl ?? null);
       setRating(prefillRating ? Number(prefillRating) : null);
-      // 回填 ISBN（从搜索页传入）
       if (prefillIsbn) setIsbn(prefillIsbn);
+      if (prefillPageCount) setPageCount(prefillPageCount);
       setBookFormat('ebook');
     }
   }, [isEditing, actualEditBookId, isPrefill, isImport, prefillTitle, prefillAuthor, prefillPublisher, prefillDescription, prefillCoverUrl, prefillIsbn, prefillRating, books]);
@@ -257,18 +232,13 @@ importFileCache.name = undefined;
       if (isEditing && actualEditBookId) {
         await updateBook(actualEditBookId, bookData);
         safeGoBack();
-      } else if (isPrefill || isImport) {
-        // 搜索预填 / 导入：创建后留在编辑模式（标签和书单立即可用）
-        const created = await addBook(bookData);
-        importFileCache.uri = undefined;
-        importFileCache.name = undefined;
-        setAutoCreatedBookId(created.id);
       } else {
-        // 手动添加：创建后直接进入书籍详情页
+        // 新建书籍 → 添加后进入详情页
         const created = await addBook(bookData);
         importFileCache.uri = undefined;
         importFileCache.name = undefined;
-        router.replace(`/book/${created.id}`);
+        delete searchDescriptionCache.text;
+        Alert.alert('已添加到书架', `《${created.title}》已加入你的书架`, [{ text: '好的', onPress: () => router.replace(`/book/${created.id}`) }]);
       }
     } catch (e) {
       Alert.alert('错误', '保存失败，请重试');
@@ -587,7 +557,7 @@ importFileCache.name = undefined;
         activeOpacity={0.8}
       >
         <Text style={[styles.saveButtonText, { color: colors.ink.inverse }]}>
-          {saving ? '保存中...' : isEditing ? '保存修改' : '创建书籍'}
+          {saving ? '保存中...' : isEditing ? '保存修改' : '添加书籍'}
         </Text>
       </TouchableOpacity>
     </ScrollView>

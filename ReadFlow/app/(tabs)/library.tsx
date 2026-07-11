@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   View, TextInput, StyleSheet, TouchableOpacity, Text, ScrollView, ActivityIndicator, Modal, Alert, Platform, Image,
 } from 'react-native';
@@ -91,11 +91,27 @@ export default function LibraryScreen() {
 
   const contextBook = contextBookId ? books.find((b) => b.id === contextBookId) : null;
 
+  // ---- 本地书的 book_id 集合（惰性查询） ----
+  const [localIds, setLocalIds] = useState<Set<string>>(new Set());
+  useEffect(() => {
+    if (activeTab !== 'local' || localIds.size > 0) return;
+    (async () => {
+      try {
+        const db = await getDatabase();
+        const rows = await db.getAllAsync<{ book_id: string }>(
+          'SELECT DISTINCT book_id FROM reading_sources WHERE file_uri IS NOT NULL',
+        );
+        setLocalIds(new Set(rows.map(r => r.book_id)));
+      } catch {}
+    })();
+  }, [activeTab]);
+
   // ---- Active tab filtering ----
   const tabBooks = useMemo(() => {
     if (activeTab === 'all') return books;
+    if (activeTab === 'local') return books.filter((b) => localIds.has(b.id));
     return books.filter((b) => bookCollectionMap.get(b.id)?.has(activeTab));
-  }, [books, activeTab, bookCollectionMap]);
+  }, [books, activeTab, bookCollectionMap, localIds]);
 
   // ---- Sort & filter ----
   const activeFilterCount = useMemo(() => {
@@ -150,7 +166,10 @@ export default function LibraryScreen() {
 
   // ---- Tabs ----
   const tabs = useMemo(() => {
-    const result: { key: string; label: string }[] = [{ key: 'all', label: '全部' }];
+    const result: { key: string; label: string }[] = [
+      { key: 'all', label: '全部' },
+      { key: 'local', label: '本地' },
+    ];
     for (const c of collections) {
       if (!hiddenIds.has(c.id)) result.push({ key: c.id, label: c.name });
     }
@@ -258,9 +277,9 @@ export default function LibraryScreen() {
                     {book.cover_url ? (
                       <Image source={{ uri: book.cover_url }} style={styles.coverImg} resizeMode="contain" />
                     ) : (
-                      <View style={[styles.coverPlaceholder, { backgroundColor: t.accent.purple + '22' }]}>
-                        <Ionicons name="book" size={32} color={t.accent.purple + '60'} style={{ marginBottom: 8 }} />
-                        <Text style={[styles.coverTitle, { color: t.accent.purple, fontSize: 12 }]} numberOfLines={2}>{book.title}</Text>
+                      <View style={[styles.coverPlaceholder, { backgroundColor: (book.accent_color || t.accent.purple) + '22' }]}>
+                        <Ionicons name="book" size={32} color={(book.accent_color || t.accent.purple) + '60'} style={{ marginBottom: 8 }} />
+                        <Text style={[styles.coverTitle, { color: book.accent_color || t.accent.purple, fontSize: 12 }]} numberOfLines={2}>{book.title}</Text>
                       </View>
                     )}
                     <View style={styles.cardInfo}>
@@ -427,9 +446,9 @@ const styles = StyleSheet.create({
   coverPlaceholder: { aspectRatio: 0.7, width: '100%', alignItems: 'center', justifyContent: 'center', paddingHorizontal: spacing.xs },
   coverTitle: { fontFamily: 'PlusJakartaSans_700Bold', fontSize: 9, fontWeight: '700', textAlign: 'center', lineHeight: 12 },
   cardInfo: { padding: spacing.xs },
-  cardTitle: { fontFamily: 'PlusJakartaSans_700Bold', fontSize: 10, fontWeight: '700', lineHeight: 13 },
-  cardAuthor: { fontFamily: 'PlusJakartaSans_400Regular', fontSize: 9, marginTop: 1 },
-  cardStatus: { fontFamily: 'PlusJakartaSans_600SemiBold', fontSize: 8, fontWeight: '600', marginTop: 2 },
+  cardTitle: { fontFamily: 'PlusJakartaSans_700Bold', fontSize: 13, fontWeight: '700', lineHeight: 17 },
+  cardAuthor: { fontFamily: 'PlusJakartaSans_400Regular', fontSize: 11, marginTop: 2 },
+  cardStatus: { fontFamily: 'PlusJakartaSans_600SemiBold', fontSize: 10, fontWeight: '600', marginTop: 2 },
   batchCheck: { position: 'absolute', top: 6, right: 6, width: 20, height: 20, borderRadius: 10, borderWidth: 2, alignItems: 'center', justifyContent: 'center', zIndex: 10 },
   moreBtn: { position: 'absolute', right: 2, bottom: 2, padding: 4, backgroundColor: 'rgba(255,255,255,0.9)', borderRadius: 10, zIndex: 10 },
 

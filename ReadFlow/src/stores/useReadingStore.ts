@@ -30,6 +30,7 @@ interface ReadingStore {
     chapter?: string,
     completedBook?: boolean,
     sourceId?: string,
+    loggedAt?: string,
   ) => Promise<void>;
   deleteSession: (id: string) => Promise<void>;
   deleteManualLog: (id: string) => Promise<void>;
@@ -126,10 +127,10 @@ export const useReadingStore = create<ReadingStore>((set, get) => ({
   },
 
   // ===== 手动补录时间 =====
-  addManualLog: async (bookId, durationMs, note, sourceLabel, pageNumber, chapter, completedBook, sourceId) => {
+  addManualLog: async (bookId, durationMs, note, sourceLabel, pageNumber, chapter, completedBook, sourceId, loggedAt) => {
     const db = await getDatabase();
     const id = generateId();
-    const now = localISO();
+    const now = loggedAt ? `${loggedAt}T${localISO().slice(11)}` : localISO();
 
     const log: ManualLog = {
       id,

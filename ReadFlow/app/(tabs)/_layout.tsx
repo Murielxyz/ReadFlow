@@ -62,8 +62,9 @@ export default function TabLayout() {
           backgroundColor: paper.white,
           borderTopWidth: 1,
           borderTopColor: outline.standard,
-          paddingTop: 6,
-          height: 56,
+          paddingTop: 4,
+          paddingBottom: 4,
+          height: 60,
           elevation: 0,
           shadowOpacity: 0,
         },
@@ -71,6 +72,7 @@ export default function TabLayout() {
           fontFamily: 'PlusJakartaSans_600SemiBold',
           fontSize: 10,
           fontWeight: '600',
+          marginTop: 2,
         },
         tabBarButton: (props) => <TabBarButton {...props} />,
         headerStyle: {
@@ -89,8 +91,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="today"
         options={{
-          title: 'Today',
-          headerShown: false,
+          title: '今日',
+          headerShown: true,
           tabBarIcon: ({ focused, color, size }) => (
             <Ionicons
               name={focused ? 'today' : 'today-outline'}
@@ -105,8 +107,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="library"
         options={{
-          title: 'Library',
-          headerShown: false,
+          title: '书架',
+          headerShown: true,
           tabBarIcon: ({ focused, color, size }) => (
             <Ionicons
               name={focused ? 'library' : 'library-outline'}
@@ -121,8 +123,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="statistics"
         options={{
-          title: 'Statistics',
-          headerShown: false,
+          title: '统计',
+          headerShown: true,
           tabBarIcon: ({ focused, color, size }) => (
             <Ionicons
               name={focused ? 'stats-chart' : 'stats-chart-outline'}
@@ -137,8 +139,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="profile"
         options={{
-          title: 'Profile',
-          headerShown: false,
+          title: '我的',
+          headerShown: true,
           tabBarIcon: ({ focused, color, size }) => (
             <Ionicons
               name={focused ? 'person' : 'person-outline'}

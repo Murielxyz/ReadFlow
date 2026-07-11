@@ -151,14 +151,14 @@ export default function TimerScreen() {
           <>
             <TouchableOpacity style={StyleSheet.absoluteFill} activeOpacity={1} onPress={() => setMenuVisible(false)} />
             <View style={[styles.menuDropdown, { backgroundColor: t.paper.primary, borderColor: t.outline.standard }]}>
-              <View style={[styles.menuItem, { borderBottomColor: t.outline.standard }]}>
-                <Ionicons name="tablet-portrait-outline" size={16} color={t.ink.secondary} />
-                <Text style={[styles.menuItemText, { color: t.ink.secondary }]}>悬浮窗：返回其他页面时持续显示计时气泡</Text>
-              </View>
-              <View style={styles.menuItem}>
-                <Ionicons name="lock-closed-outline" size={16} color={t.ink.secondary} />
-                <Text style={[styles.menuItemText, { color: t.ink.secondary }]}>锁屏计时：通知栏显示计时进度</Text>
-              </View>
+              <TouchableOpacity style={[styles.menuItem, { borderBottomColor: t.outline.standard }]} onPress={() => Alert.alert('悬浮窗', '计时过程中，悬浮窗会在所有页面持续显示计时进度。\n\n返回其他页面即可看到悬浮气泡，支持拖动和展开操作。')} activeOpacity={0.6}>
+                <Ionicons name="tablet-portrait-outline" size={16} color={t.accent.primary} />
+                <Text style={[styles.menuItemText, { color: t.ink.primary }]}>悬浮窗</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.menuItem} onPress={() => Alert.alert('锁屏计时', '计时过程中，通知栏会显示当前阅读时长。\n\n此功能无需额外设置，计时器运行时自动启用。')} activeOpacity={0.6}>
+                <Ionicons name="lock-closed-outline" size={16} color={t.accent.primary} />
+                <Text style={[styles.menuItemText, { color: t.ink.primary }]}>锁屏计时</Text>
+              </TouchableOpacity>
             </View>
           </>
         )}

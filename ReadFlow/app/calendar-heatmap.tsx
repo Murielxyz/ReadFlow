@@ -272,6 +272,21 @@ export default function CalendarHeatmapScreen() {
           </>
         )}
 
+        {/* 颜色图例 */}
+        <View style={[styles.legend, { borderColor: t.outline.standard }]}>
+          <Text style={[styles.legendTitle, { color: t.ink.secondary }]}>阅读时长</Text>
+          <View style={styles.legendRow}>
+            <View style={[styles.legendCell, { backgroundColor: t.outline.standard + '30' }]} />
+            <View style={[styles.legendCell, { backgroundColor: t.accent.primary + '20' }]} />
+            <View style={[styles.legendCell, { backgroundColor: t.accent.primary + '50' }]} />
+            <View style={[styles.legendCell, { backgroundColor: t.accent.primary + '80' }]} />
+            <View style={[styles.legendCell, { backgroundColor: t.accent.primary }]} />
+          </View>
+          <View style={styles.legendLabels}>
+            <Text style={[styles.legendLabel, { color: t.ink.tertiary }]}>0m</Text>
+            <Text style={[styles.legendLabel, { color: t.ink.tertiary }]}>多</Text>
+          </View>
+        </View>
         <View style={{ height: 40 }} />
       </ScrollView>
     </View>
@@ -304,4 +319,10 @@ const styles = StyleSheet.create({
   miniCalHeader: { width: '14.28%', textAlign: 'center', fontFamily: 'PlusJakartaSans_500Medium', fontSize: 7, fontWeight: '500', color: '#8A7A6E', marginBottom: 1 },
   miniCalCell: { width: '14.28%', aspectRatio: 1, alignItems: 'center', justifyContent: 'center' },
   miniCalDay: { fontFamily: 'PlusJakartaSans_500Medium', fontSize: 8, fontWeight: '500' },
+  legend: { marginTop: spacing.lg, padding: spacing.md, borderRadius: radii.md, borderWidth: 1, alignItems: 'center' },
+  legendTitle: { fontFamily: 'PlusJakartaSans_600SemiBold', fontSize: 11, fontWeight: '600', marginBottom: spacing.sm },
+  legendRow: { flexDirection: 'row', gap: 4 },
+  legendCell: { width: 24, height: 24, borderRadius: 4 },
+  legendLabels: { flexDirection: 'row', justifyContent: 'space-between', width: 140, marginTop: 2 },
+  legendLabel: { fontFamily: 'PlusJakartaSans_400Regular', fontSize: 9 },
 });

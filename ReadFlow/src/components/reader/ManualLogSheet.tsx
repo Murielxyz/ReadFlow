@@ -49,6 +49,7 @@ export default function ManualLogSheet({
   const [chapter, setChapter] = useState('');
   const [note, setNote] = useState('');
   const [markFinished, setMarkFinished] = useState(false);
+  const [logDate, setLogDate] = useState(new Date().toISOString().slice(0, 10));
   const [saving, setSaving] = useState(false);
   const { sheetStyle, backdropStyle } = useSheetAnimation(visible);
 
@@ -74,6 +75,7 @@ export default function ManualLogSheet({
     await addManualLog(
       bookId, totalMs, note || undefined,
       undefined, finalPage, chapter || undefined, markFinished,
+      undefined, logDate || undefined,
     );
     // 同步笔记到书籍详情页阅读笔记 Tab
     if (note.trim()) {
@@ -89,7 +91,7 @@ export default function ManualLogSheet({
     setMarkFinished(false);
     onSaved();
     onClose();
-  }, [hours, minutes, pageNumber, chapter, note, markFinished, bookId, addManualLog, addNote, onSaved, onClose]);
+  }, [hours, minutes, pageNumber, chapter, note, markFinished, bookId, addManualLog, addNote, logDate, onSaved, onClose]);
 
   const handleQuickSelect = useCallback((ms: number) => {
     const h = Math.floor(ms / 3600000);
@@ -121,8 +123,19 @@ export default function ManualLogSheet({
               </TouchableOpacity>
             </View>
 
+            {/* 日期（可选） */}
+            <Text style={[styles.label, { color: t.ink.secondary }]}>阅读日期（可选，默认今天）</Text>
+            <TextInput
+              style={[styles.timeInput, { backgroundColor: t.paper.white, borderColor: t.outline.standard, color: t.ink.primary, height: 44, width: '100%' }]}
+              value={logDate}
+              onChangeText={setLogDate}
+              placeholder="YYYY-MM-DD"
+              placeholderTextColor={t.ink.tertiary}
+              maxLength={10}
+            />
+
             {/* 时长输入 */}
-            <Text style={[styles.label, { color: t.ink.secondary }]}>阅读时长</Text>
+            <Text style={[styles.label, { color: t.ink.secondary, marginTop: spacing.md }]}>阅读时长</Text>
             <View style={styles.timeInputRow}>
               <View style={styles.timeInputGroup}>
                 <TextInput

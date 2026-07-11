@@ -47,7 +47,7 @@ export const useBookStore = create<BookStore>((set, get) => ({
     const db = await getDatabase();
     const id = generateId();
 
-    // 根据书名哈希分配强调色
+    // 根据书名哈希分配强调色（同一本书颜色永久不变）
     const colorIndex =
       Math.abs(
         input.title.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0)
