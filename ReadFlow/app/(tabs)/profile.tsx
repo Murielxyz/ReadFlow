@@ -421,25 +421,12 @@ export default function ProfileScreen() {
               <View style={[styles.settingIcon, { backgroundColor: t.accent.primaryBg }]}>
                 <Ionicons name="information-circle-outline" size={18} color={t.accent.primary} />
               </View>
-              <View>
+              <View style={{ flex: 1 }}>
                 <Text style={[styles.settingTitle, { color: t.ink.primary }]}>关于 ReadFlow</Text>
-                <Text style={[styles.settingDesc, { color: t.ink.tertiary }]}>版本 {Constants.expoConfig?.version ?? '2.3'} · 以书为中心的阅读记录</Text>
+                <Text style={[styles.settingDesc, { color: t.ink.tertiary }]} numberOfLines={2}>版本 {Constants.expoConfig?.version ?? '2.3'} · 以书为中心的阅读记录</Text>
               </View>
             </View>
           </View>
-          <View style={[styles.divider, { backgroundColor: t.outline.standard }]} />
-          <TouchableOpacity style={styles.settingRow} activeOpacity={0.6} onPress={handleRateUs}>
-            <View style={styles.settingLeft}>
-              <View style={[styles.settingIcon, { backgroundColor: t.accent.yellowBg }]}>
-                <Ionicons name="star-outline" size={18} color={t.accent.primary} />
-              </View>
-              <View>
-                <Text style={[styles.settingTitle, { color: t.ink.primary }]}>给我们评分</Text>
-                <Text style={[styles.settingDesc, { color: t.ink.tertiary }]}>在 App Store 为我们打分</Text>
-              </View>
-            </View>
-            <Ionicons name="chevron-forward" size={16} color={t.ink.tertiary} />
-          </TouchableOpacity>
           <View style={[styles.divider, { backgroundColor: t.outline.standard }]} />
           <TouchableOpacity style={styles.settingRow} activeOpacity={0.6} onPress={handleFeedback}>
             <View style={styles.settingLeft}>

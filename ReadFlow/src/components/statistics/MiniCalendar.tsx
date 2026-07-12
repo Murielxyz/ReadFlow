@@ -53,10 +53,9 @@ export default function MiniCalendar({ type, days, year, month, weekDays, onDayP
                           </View>
                         );
                       })}
-                      <Text style={[styles.weekCoverDuration, { color: '#fff' }]}>{formatDuration(dayData.books[0].durationMs)}</Text>
                     </View>
                   ) : null}
-                  <Text style={[styles.weekDay, { color: dayData.books.length > 0 ? '#fff' : t.ink.tertiary }]}>{dayData.day}</Text>
+                  <Text style={[styles.weekDay, { color: dayData.books.length > 0 ? '#1A1512' : t.ink.tertiary, fontSize: dayData.books.length > 0 ? 12 : 11, fontWeight: dayData.books.length > 0 ? '800' : '700' }]}>{dayData.books.length > 0 ? formatDuration(dayData.books[0].durationMs) : dayData.day}</Text>
                 </>
               ) : (
                 <Text style={[styles.weekDay, { color: t.ink.tertiary }]}>-</Text>

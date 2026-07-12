@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { View, Text, TouchableOpacity, Platform } from 'react-native';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import GlobalTimerBubble from '../src/components/reader/GlobalTimerBubble';
 import {
@@ -59,9 +59,23 @@ export default function RootLayout() {
             shouldPlaySound: true,
             shouldSetBadge: false,
             shouldShowBanner: true,
-            shouldShowList: true,
           }),
         });
+        // 监听通知操作按钮（锁屏计时的暂停/结束）
+        const sub = Notifications.addNotificationResponseReceivedListener((response: any) => {
+          const data = response.notification?.request?.content?.data;
+          if (data?.type !== 'timer') return;
+          const actionId = response.actionIdentifier;
+          if (actionId === 'timer-pause') {
+            const store = require('../src/stores/useTimerStore').useTimerStore.getState();
+            if (store.segmentStart && store.pausedAt === null) store.pauseTimer();
+            else if (store.pausedAt !== null) store.resumeTimer();
+          } else if (actionId === 'timer-stop') {
+            const store = require('../src/stores/useTimerStore').useTimerStore.getState();
+            store.stopTimer();
+          }
+        });
+        return () => { if (sub) sub.remove(); };
       } catch {}
     }
   }, []);
@@ -71,6 +85,11 @@ export default function RootLayout() {
       try {
         await getDatabase();
         await seedDefaultData();
+        // 初始化计时器通知操作类别
+        try {
+          const { ensureTimerCategory } = require('../src/services/timerNotificationService');
+          await ensureTimerCategory();
+        } catch {}
 
         // 加载持久化设置（每日目标 / 提醒开关 / 提醒时间）
         await useSettingsStore.getState().loadSettings();
@@ -130,7 +149,6 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <SafeAreaView style={{ flex: 1, backgroundColor: paper.primary }} edges={['top', 'left', 'right']}>
           <StatusBar style={paper.primary === '#1A1A1C' ? 'light' : 'dark'} />
           <Stack
             screenOptions={{
@@ -188,7 +206,6 @@ export default function RootLayout() {
       </Stack>
       {/* 全局悬浮计时器气泡 — 在所有页面（除 reader/timer 外）显示 */}
       <GlobalTimerBubble />
-        </SafeAreaView>
       </GestureHandlerRootView>
     </SafeAreaProvider>
   );

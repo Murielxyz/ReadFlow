@@ -50,7 +50,7 @@ export default function LibraryScreen() {
   const [filterVisible, setFilterVisible] = useState(false);
   const [sortVisible, setSortVisible] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
-  const [gridColumns] = useState(2);
+  const [gridColumns] = useState(3);
   const [importVisible, setImportVisible] = useState(false);
   const [contextBookId, setContextBookId] = useState<string | null>(null);
   const [menuPosition, setMenuPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
@@ -403,6 +403,17 @@ export default function LibraryScreen() {
       <BookMenuSheet visible={contextBookId !== null} book={contextBook ?? null} onClose={() => setContextBookId(null)} anchorX={menuPosition.x} anchorY={menuPosition.y} onMultiSelect={() => { setBookBatchMode(true); setSelectedBooks(new Set()); }} />
       <ImportModal visible={importVisible} onClose={() => setImportVisible(false)} />
       <AddBookMenuSheet visible={addMenuVisible} onClose={() => setAddMenuVisible(false)} onSearch={() => { setAddMenuVisible(false); setTimeout(() => router.push('/search'), 200); }} onImport={() => { setAddMenuVisible(false); setImportVisible(true); }} onManual={() => { setAddMenuVisible(false); setTimeout(() => router.push('/add-book'), 200); }} />
+
+      {/* 悬浮加号按钮 */}
+      {!bookBatchMode && (
+        <TouchableOpacity
+          style={[styles.fab, { backgroundColor: t.accent.purple }]}
+          onPress={() => setAddMenuVisible(true)}
+          activeOpacity={0.8}
+        >
+          <Ionicons name="add" size={28} color="#FFFFFF" />
+        </TouchableOpacity>
+      )}
     </View>
   );
 }
@@ -439,6 +450,8 @@ const styles = StyleSheet.create({
   scroll: { flex: 1 },
   scrollContent: { paddingHorizontal: spacing.md, paddingTop: spacing.md },
 
+  // FAB
+  fab: { position: 'absolute', bottom: 20, right: 20, width: 56, height: 56, borderRadius: 28, alignItems: 'center', justifyContent: 'center', elevation: 6, shadowColor: '#000', shadowOpacity: 0.25, shadowRadius: 8, shadowOffset: { width: 0, height: 4 } },
   // Book grid
   bookGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start' },
   bookCard: { borderRadius: radii.md, borderWidth: 1, marginBottom: spacing.sm, ...softShadow },

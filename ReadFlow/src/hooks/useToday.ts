@@ -28,9 +28,9 @@ export interface TodayData {
   sessionCount: number;
   /** 连续阅读天数 */
   streak: number;
-  /** 今日阅读页数合计 */
-  totalPages: number;
-  /** 今日读过书籍数 */
+  /** 今日读完书籍数 */
+  finishedToday: number;
+  /** 今日读过书籍数（计时+状态变为在读） */
   booksReadToday: number;
   /** 阅读笔记总数（想法 + 高亮） */
   readingNotes: number;
@@ -75,7 +75,7 @@ export function useToday(): TodayData {
   const [todayMs, setTodayMs] = useState(0);
   const [sessionCount, setSessionCount] = useState(0);
   const [streak, setStreak] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
+  const [finishedToday, setFinishedToday] = useState(0);
   const [booksReadToday, setBooksReadToday] = useState(0);
   const [readingNotes, setReadingNotes] = useState(0);
   const [recentTimeline, setRecentTimeline] = useState<TodayTimelineEntry[]>([]);
@@ -139,40 +139,28 @@ export function useToday(): TodayData {
       const streakCount = calculateStreak(activeDays.map((r) => r.day));
       setStreak(streakCount);
 
-      // ------ 今日阅读页数（每本书取最新记录页数，多本书合计） ------
-      // 取所有记录，JS 中过滤今天 + 按书分组取最新
-      const [manualRows, sessionRows] = await Promise.all([
-        db.getAllAsync<{ book_id: string; page_number: number; logged_at: string }>(
-          'SELECT book_id, page_number, logged_at FROM manual_logs ORDER BY logged_at DESC',
-        ),
-        db.getAllAsync<{ book_id: string; page_number: number; start_time: string }>(
-          'SELECT book_id, page_number, start_time FROM reading_sessions ORDER BY start_time DESC',
-        ),
-      ]);
-      // JS 中合并：过滤今天 + 每本书取最新 page_number
-      const allRows = [
-        ...manualRows.filter(r => (r.logged_at||'').startsWith(todayStr)).map(r => ({ book_id: r.book_id, page: Number(r.page_number) || 0, ts: r.logged_at })),
-        ...sessionRows.filter(r => (r.start_time||'').startsWith(todayStr)).map(r => ({ book_id: r.book_id, page: Number(r.page_number) || 0, ts: r.start_time })),
-      ];
-      allRows.sort((a, b) => b.ts.localeCompare(a.ts));
-      const seen = new Set<string>();
-      let total = 0;
-      for (const r of allRows) {
-        if (!seen.has(r.book_id)) {
-          seen.add(r.book_id);
-          total += r.page;
-        }
-      }
-      setTotalPages(total);
+      // ------ 今日读完书籍数 ------
+      const finishedRow = await db.getFirstAsync<{ cnt: number }>(
+        `SELECT COUNT(*) as cnt FROM books WHERE status = 'finished' AND finished_date LIKE ?`,
+        [`${todayStr}%`],
+      );
+      setFinishedToday(finishedRow?.cnt ?? 0);
 
-      // ------ 今日读过书籍数（全量查询 + JS 过滤今天）------
+      // ------ 今日读过书籍数（有计时记录 + 状态变为在读）------
       const [brSessAll, brManAll] = await Promise.all([
         db.getAllAsync<{ book_id: string; start_time: string }>('SELECT book_id, start_time FROM reading_sessions'),
         db.getAllAsync<{ book_id: string; logged_at: string }>('SELECT book_id, logged_at FROM manual_logs'),
       ]);
       const bookIdSet = new Set<string>();
+      // 今天有计时记录的
       for (const r of brSessAll) if ((r.start_time||'').startsWith(todayStr)) bookIdSet.add(r.book_id);
       for (const r of brManAll) if ((r.logged_at||'').startsWith(todayStr)) bookIdSet.add(r.book_id);
+      // 今天状态变为"在读"的（manual_logs note 含"开始阅读"）
+      for (const r of brManAll) {
+        if ((r as any).note?.includes('开始阅读') && (r.logged_at||'').startsWith(todayStr)) {
+          bookIdSet.add(r.book_id);
+        }
+      }
       setBooksReadToday(bookIdSet.size);
 
       // ------ 阅读笔记总数（想法 + 高亮） ------
@@ -308,7 +296,7 @@ export function useToday(): TodayData {
     todayMs,
     sessionCount,
     streak,
-    totalPages,
+    finishedToday,
     booksReadToday,
     readingNotes,
     dailyGoalMs: dailyGoalMs(),

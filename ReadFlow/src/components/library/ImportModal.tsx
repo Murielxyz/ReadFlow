@@ -92,8 +92,10 @@ export default function ImportModal({ visible, onClose }: ImportModalProps) {
 
       let prefillTitle = titleFromName;
       let prefillAuthor = '';
+      let prefillPublisher = '';
       let prefillDesc = '';
       let prefillCoverUrl = '';
+      let prefillIsbn = '';
 
       // EPUB: 尝试提取元数据
       if (isEpub) {
@@ -102,8 +104,10 @@ export default function ImportModal({ visible, onClose }: ImportModalProps) {
           if (metadata) {
             prefillTitle = metadata.title || titleFromName;
             prefillAuthor = metadata.author || '';
+            prefillPublisher = metadata.publisher || '';
             prefillDesc = metadata.description || '';
             prefillCoverUrl = metadata.coverDataUri || '';
+            prefillIsbn = metadata.isbn || '';
           }
         } catch { /* fall through */ }
       }
@@ -116,8 +120,10 @@ export default function ImportModal({ visible, onClose }: ImportModalProps) {
       const params = new URLSearchParams();
       if (prefillTitle) params.set('prefillTitle', prefillTitle);
       if (prefillAuthor) params.set('prefillAuthor', prefillAuthor);
+      if (prefillPublisher) params.set('prefillPublisher', prefillPublisher);
       if (prefillDesc) params.set('prefillDescription', prefillDesc);
       if (prefillCoverUrl) params.set('prefillCoverUrl', prefillCoverUrl);
+      if (prefillIsbn) params.set('prefillIsbn', prefillIsbn);
       // 文件名通过 URL 传递（短字符串，无编码问题）
       if (file.name) params.set('importFileName', file.name);
 

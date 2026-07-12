@@ -2,6 +2,7 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useColors } from '../../src/stores/useThemeStore';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { radii } from '../../src/theme';
 
 /**
@@ -52,6 +53,7 @@ const tabStyles = StyleSheet.create({
 
 export default function TabLayout() {
   const { paper, ink, accent, outline } = useColors();
+  const insets = useSafeAreaInsets();
 
   return (
     <Tabs
@@ -63,7 +65,8 @@ export default function TabLayout() {
           borderTopWidth: 1,
           borderTopColor: outline.standard,
           paddingTop: 2,
-          height: 52,
+          paddingBottom: insets.bottom > 0 ? insets.bottom : 4,
+          height: 52 + (insets.bottom > 0 ? insets.bottom : 0),
           elevation: 0,
           shadowOpacity: 0,
         },

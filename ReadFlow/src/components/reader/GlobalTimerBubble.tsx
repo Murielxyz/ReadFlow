@@ -20,6 +20,7 @@ import {
   dismissTimerNotification,
   updateTimerNotificationThrottled,
   ensureTimerChannel,
+  ensureTimerCategory,
 } from '../../services/timerNotificationService';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
@@ -64,6 +65,7 @@ export default function GlobalTimerBubble() {
   // 初始化和清理通知频道
   useEffect(() => {
     ensureTimerChannel();
+    ensureTimerCategory();
   }, []);
 
   // 实时更新显示时间

@@ -4,6 +4,7 @@ import {
   Text,
   StyleSheet,
   TextInput,
+  ScrollView,
   TouchableOpacity,
   Modal,
   KeyboardAvoidingView,
@@ -123,16 +124,43 @@ export default function ManualLogSheet({
               </TouchableOpacity>
             </View>
 
-            {/* 日期（可选） */}
-            <Text style={[styles.label, { color: t.ink.secondary }]}>阅读日期（可选，默认今天）</Text>
-            <TextInput
-              style={[styles.timeInput, { backgroundColor: t.paper.white, borderColor: t.outline.standard, color: t.ink.primary, height: 44, width: '100%' }]}
-              value={logDate}
-              onChangeText={setLogDate}
-              placeholder="YYYY-MM-DD"
-              placeholderTextColor={t.ink.tertiary}
-              maxLength={10}
-            />
+            {/* 日期选择器（滚动式，不弹键盘） */}
+            <Text style={[styles.label, { color: t.ink.secondary }]}>阅读日期（可选）</Text>
+            <View style={styles.datePickerRow}>
+              {/* 年 */}
+              <View style={styles.dateCol}>
+                <Text style={[styles.dateColLabel, { color: t.ink.tertiary }]}>年</Text>
+                <ScrollView style={styles.dateScroll} showsVerticalScrollIndicator={false}>
+                  {Array.from({ length: 10 }, (_, i) => new Date().getFullYear() - 5 + i).map(y => (
+                    <TouchableOpacity key={y} style={[styles.dateOption, y === parseInt(logDate.slice(0,4)) && { backgroundColor: t.accent.primary + '22' }]} onPress={() => setLogDate(`${y}-${logDate.slice(5)}`)} activeOpacity={0.6}>
+                      <Text style={[styles.dateOptionText, { color: y === parseInt(logDate.slice(0,4)) ? t.accent.primary : t.ink.primary }]}>{y}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </View>
+              {/* 月 */}
+              <View style={styles.dateCol}>
+                <Text style={[styles.dateColLabel, { color: t.ink.tertiary }]}>月</Text>
+                <ScrollView style={styles.dateScroll} showsVerticalScrollIndicator={false}>
+                  {Array.from({ length: 12 }, (_, i) => i + 1).map(m => (
+                    <TouchableOpacity key={m} style={[styles.dateOption, m === parseInt(logDate.slice(5,7)) && { backgroundColor: t.accent.primary + '22' }]} onPress={() => { const parts = logDate.split('-'); setLogDate(`${parts[0]}-${String(m).padStart(2,'0')}-${parts[2] || '01'}`); }} activeOpacity={0.6}>
+                      <Text style={[styles.dateOptionText, { color: m === parseInt(logDate.slice(5,7)) ? t.accent.primary : t.ink.primary }]}>{m}月</Text>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </View>
+              {/* 日 */}
+              <View style={styles.dateCol}>
+                <Text style={[styles.dateColLabel, { color: t.ink.tertiary }]}>日</Text>
+                <ScrollView style={styles.dateScroll} showsVerticalScrollIndicator={false}>
+                  {Array.from({ length: 31 }, (_, i) => i + 1).map(d => (
+                    <TouchableOpacity key={d} style={[styles.dateOption, d === parseInt(logDate.slice(8,10)) && { backgroundColor: t.accent.primary + '22' }]} onPress={() => { const parts = logDate.split('-'); setLogDate(`${parts[0]}-${parts[1] || '01'}-${String(d).padStart(2,'0')}`); }} activeOpacity={0.6}>
+                      <Text style={[styles.dateOptionText, { color: d === parseInt(logDate.slice(8,10)) ? t.accent.primary : t.ink.primary }]}>{d}日</Text>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </View>
+            </View>
 
             {/* 时长输入 */}
             <Text style={[styles.label, { color: t.ink.secondary, marginTop: spacing.md }]}>阅读时长</Text>
@@ -384,6 +412,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '800',
   },
+  datePickerRow: { flexDirection: 'row', gap: spacing.sm, marginBottom: spacing.sm },
+  dateCol: { flex: 1, alignItems: 'center' },
+  dateColLabel: { fontFamily: 'PlusJakartaSans_500Medium', fontSize: 9, fontWeight: '500', marginBottom: 2 },
+  dateScroll: { maxHeight: 120, width: '100%' },
+  dateOption: { paddingVertical: 6, paddingHorizontal: 8, borderRadius: 8, alignItems: 'center', marginBottom: 2 },
+  dateOptionText: { fontFamily: 'PlusJakartaSans_600SemiBold', fontSize: 13, fontWeight: '600' },
   pageUnit: {
     fontFamily: 'PlusJakartaSans_600SemiBold',
     fontSize: 14,

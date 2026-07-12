@@ -88,8 +88,8 @@ export default function StatisticsScreen() {
         db.getAllAsync<Book>('SELECT * FROM books'),
       ]);
 
-      // JS 过滤时间范围
-      const inRange = (ts: string) => ts >= start && ts <= (end || '2099-12-31');
+      // JS 过滤时间范围（仅比较日期部分，避免 T 导致字符串比较错误）
+      const inRange = (ts: string) => { const d = ts.slice(0, 10); return d >= start && d <= (end || '2099-12-31'); };
       const fSess = sessAll.filter(s => inRange(s.start_time));
       const fMan = manAll.filter(m => inRange(m.logged_at));
       const totalMs = fSess.reduce((s, r) => s + (r.duration_ms||0), 0) + fMan.reduce((s, r) => s + (r.duration_ms||0), 0);

@@ -1,6 +1,5 @@
 import { Platform } from 'react-native';
 
-// expo-notifications 仅原生可用
 let Notifications: any = null;
 if (Platform.OS !== 'web') {
   try { Notifications = require('expo-notifications'); } catch {}
@@ -8,20 +7,14 @@ if (Platform.OS !== 'web') {
 
 const TIMER_CHANNEL = 'timer-channel';
 const TIMER_NOTIFICATION_ID = 'reading-timer';
+const TIMER_CATEGORY = 'timer-actions';
 
-/**
- * 计时器通知服务 — 锁屏/后台计时显示。
- *
- * 当计时器在前台运行时，显示一个持续通知，包含当前计时和暂停/停止操作。
- * 用户可以在锁屏界面看到计时进度并控制。
- */
-
-/** 确保 Android 通知频道已创建 */
+/** 确保 Android 通知频道和操作类别已创建 */
 export async function ensureTimerChannel(): Promise<void> {
   if (!Notifications || Platform.OS !== 'android') return;
   await Notifications.setNotificationChannelAsync(TIMER_CHANNEL, {
     name: '阅读计时器',
-    importance: Notifications.AndroidImportance.LOW, // 低优先级：不发出提示音
+    importance: Notifications.AndroidImportance.LOW,
     vibrationPattern: null as any,
     sound: null as any,
     lockscreenVisibility: Notifications.AndroidNotificationVisibility.PUBLIC,
@@ -30,7 +23,24 @@ export async function ensureTimerChannel(): Promise<void> {
   });
 }
 
-/** 显示/更新计时器通知 */
+/** 注册计时器操作类别（暂停/恢复 + 停止按钮） */
+export async function ensureTimerCategory(): Promise<void> {
+  if (!Notifications) return;
+  await Notifications.setNotificationCategoryAsync(TIMER_CATEGORY, [
+    {
+      identifier: 'timer-pause',
+      buttonTitle: '暂停',
+      options: { opensAppToForeground: false },
+    },
+    {
+      identifier: 'timer-stop',
+      buttonTitle: '结束',
+      options: { opensAppToForeground: false, isDestructive: true },
+    },
+  ]);
+}
+
+/** 显示/更新计时器通知（含操作按钮） */
 export async function showTimerNotification(params: {
   bookTitle: string;
   elapsedMs: number;
@@ -52,14 +62,15 @@ export async function showTimerNotification(params: {
       title: isPaused ? '⏸ 计时已暂停' : `📖 正在阅读: ${bookTitle}`,
       body: `${timeStr}${isPaused ? ' (已暂停)' : ''}`,
       data: { type: 'timer', isPaused },
-      color: '#4A90D9',
+      color: '#7C6BFF',
+      categoryIdentifier: TIMER_CATEGORY,
       ...(Platform.OS === 'android' ? {
         channelId: TIMER_CHANNEL,
-        ongoing: true, // 持续通知，不可滑动删除
+        ongoing: true,
         autoCancel: false,
       } : {}),
     },
-    trigger: null, // 立即显示
+    trigger: null,
   });
 }
 
@@ -69,7 +80,7 @@ export async function dismissTimerNotification(): Promise<void> {
   await Notifications.dismissNotificationAsync(TIMER_NOTIFICATION_ID);
 }
 
-/** 更新计时器通知（节流版本，每 30 秒调用一次） */
+/** 更新计时器通知（30秒节流） */
 let lastUpdateTime = 0;
 export async function updateTimerNotificationThrottled(params: {
   bookTitle: string;
@@ -77,7 +88,7 @@ export async function updateTimerNotificationThrottled(params: {
   isPaused: boolean;
 }): Promise<void> {
   const now = Date.now();
-  if (now - lastUpdateTime < 30_000) return; // 30 秒节流
+  if (now - lastUpdateTime < 30_000) return;
   lastUpdateTime = now;
   await showTimerNotification(params);
 }

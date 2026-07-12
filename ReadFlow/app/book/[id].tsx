@@ -289,7 +289,7 @@ export default function BookDetailScreen() {
               uri={book.cover_url}
               title={book.title}
               accentColor={book.accent_color}
-              size="lg"
+              size="md"
             />
           </View>
 

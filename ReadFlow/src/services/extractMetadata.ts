@@ -56,9 +56,8 @@ export interface EpubMetadata {
 export async function extractEpubMetadata(fileUri: string): Promise<EpubMetadata | null> {
   if (!FileSystem) return null;
   try {
-    const base64 = await FileSystem.readAsStringAsync(fileUri, {
-      encoding: FileSystem.EncodingType.Base64,
-    });
+    // 使用 'base64' 字符串（兼容 legacy API）
+    const base64 = await FileSystem.readAsStringAsync(fileUri, { encoding: 'base64' });
     // 解码 Base64
     const bytes = base64ToUint8Array(base64);
     const zip = parseZip(bytes);

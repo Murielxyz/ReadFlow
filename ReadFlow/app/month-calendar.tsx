@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, ActivityIndicator, Modal, Share, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, router } from 'expo-router';
 import ViewShot from 'react-native-view-shot';
 import { spacing, radii } from '../src/theme';
 import { softShadow } from '../src/theme/shadows';
@@ -27,6 +27,7 @@ export default function MonthCalendarScreen() {
   const [filterMode, setFilterMode] = useState<DateFilterMode>('record');
   const [stackMode, setStackMode] = useState<'grid' | 'stack'>('grid');
   const [filterVisible, setFilterVisible] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [selYear, setSelYear] = useState(year);
   const [selMonth, setSelMonth] = useState(month);
   const viewShotRef = useRef<any>(null);
@@ -149,7 +150,7 @@ export default function MonthCalendarScreen() {
               const hasBooks = cell.books.length > 0;
               const intensity = cell.mins > 0 ? Math.min(1, cell.mins / maxMins) : 0;
               return (
-                <View key={ci} style={[styles.dayCell, { backgroundColor: hasBooks ? `${t.accent.purple}${Math.round(intensity*50+10).toString(16).padStart(2,'0')}` : 'transparent', borderRadius: 6 }]}>
+                <TouchableOpacity key={ci} style={[styles.dayCell, { backgroundColor: hasBooks ? `${t.accent.purple}${Math.round(intensity*50+10).toString(16).padStart(2,'0')}` : 'transparent', borderRadius: 6 }, selectedDate === cell.date && { borderWidth: 2, borderColor: t.accent.primary }]} onPress={() => setSelectedDate(selectedDate === cell.date ? null : cell.date)} activeOpacity={0.7}>
                   <Text style={[styles.dayNum, { color: hasBooks && intensity > 0.7 ? '#fff' : t.ink.tertiary }]}>{cell.day}</Text>
                   {hasBooks && (
                     stackMode === 'grid' ? (
@@ -168,13 +169,37 @@ export default function MonthCalendarScreen() {
                       </View>
                     )
                   )}
-                </View>
+                </TouchableOpacity>
               );
             })}
           </View>
         ))}
         </View>
         </ViewShot>
+        {/* 选中日期的时间线 */}
+        {selectedDate && (() => {
+          const selDay = days.find(d => d.date === selectedDate);
+          if (!selDay || selDay.books.length === 0) return (
+            <View style={[styles.timelineCard, { borderColor: t.outline.standard }]}>
+              <Text style={[styles.timelineEmpty, { color: t.ink.tertiary }]}>{selectedDate} · 无阅读记录</Text>
+            </View>
+          );
+          return (
+            <View style={[styles.timelineCard, { borderColor: t.outline.standard }]}>
+              <Text style={[styles.timelineTitle, { color: t.ink.primary }]}>{selectedDate} · {selDay.books.length} 本书</Text>
+              {selDay.books.map((b, bi) => (
+                <TouchableOpacity key={bi} style={[styles.timelineItem, { borderBottomColor: t.outline.standard }]} onPress={() => router.push(`/book/${b.id}`)} activeOpacity={0.6}>
+                  {b.cover_url ? <Image source={{ uri: b.cover_url }} style={styles.timelineCover} /> : <View style={[styles.timelineCoverPh, { backgroundColor: t.accent.purple + '22' }]}><Ionicons name="book" size={16} color={t.accent.purple} /></View>}
+                  <View style={{ flex: 1 }}>
+                    <Text style={[styles.timelineBookTitle, { color: t.ink.primary }]} numberOfLines={1}>{b.title}</Text>
+                    <Text style={[styles.timelineBookMeta, { color: t.ink.tertiary }]}>{b.author || '未知作者'} · 阅读 {Math.floor((b.durationMs||0)/60000)} 分钟</Text>
+                  </View>
+                  <Ionicons name="chevron-forward" size={14} color={t.ink.tertiary} />
+                </TouchableOpacity>
+              ))}
+            </View>
+          );
+        })()}
         <View style={{ height: 40 }} />
       </ScrollView>
 
@@ -231,4 +256,12 @@ const styles = StyleSheet.create({
   filterLabel: { fontFamily: 'PlusJakartaSans_600SemiBold', fontSize: 13, fontWeight: '600', marginBottom: spacing.sm },
   filterOption: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: spacing.md, borderBottomWidth: StyleSheet.hairlineWidth },
   filterOptText: { fontFamily: 'PlusJakartaSans_500Medium', fontSize: 14, fontWeight: '500' },
+  timelineCard: { marginTop: spacing.md, borderWidth: 1, borderRadius: radii.lg, padding: spacing.md, backgroundColor: '#FAFAF8' },
+  timelineTitle: { fontFamily: 'PlusJakartaSans_700Bold', fontSize: 14, fontWeight: '700', marginBottom: spacing.sm },
+  timelineEmpty: { fontFamily: 'PlusJakartaSans_400Regular', fontSize: 13, textAlign: 'center', paddingVertical: spacing.md },
+  timelineItem: { flexDirection: 'row', alignItems: 'center', paddingVertical: spacing.sm, borderBottomWidth: StyleSheet.hairlineWidth, gap: spacing.md },
+  timelineCover: { width: 36, height: 48, borderRadius: 4 },
+  timelineCoverPh: { width: 36, height: 48, borderRadius: 4, alignItems: 'center', justifyContent: 'center' },
+  timelineBookTitle: { fontFamily: 'PlusJakartaSans_700Bold', fontSize: 13, fontWeight: '700' },
+  timelineBookMeta: { fontFamily: 'PlusJakartaSans_400Regular', fontSize: 11, marginTop: 2 },
 });

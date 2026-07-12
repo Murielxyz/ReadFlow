@@ -36,7 +36,7 @@ export default function TodayScreen() {
   const router = useRouter();
   const {
     todayMs,
-    totalPages,
+    finishedToday,
     booksReadToday,
     readingNotes,
     recentTimeline,
@@ -211,13 +211,13 @@ export default function TodayScreen() {
             <Text style={[styles.bentoValue, { color: t.ink.primary }]}>{formatDuration(todayMs)}</Text>
             <Text style={[styles.bentoLabel, { color: t.ink.tertiary }]}>阅读时长</Text>
           </View>
-          {/* 阅读页数 */}
+          {/* 已读书籍 */}
           <View style={[styles.bentoCard, { backgroundColor: t.paper.white, borderColor: t.outline.standard }]}>
-            <View style={[styles.bentoIconCircle, { backgroundColor: t.accent.primaryBg }]}>
-              <Ionicons name="document-text-outline" size={20} color={t.accent.primary} />
+            <View style={[styles.bentoIconCircle, { backgroundColor: t.accent.greenBg }]}>
+              <Ionicons name="checkmark-circle-outline" size={20} color={t.accent.green} />
             </View>
-            <Text style={[styles.bentoValue, { color: t.ink.primary }]}>{totalPages} 页</Text>
-            <Text style={[styles.bentoLabel, { color: t.ink.tertiary }]}>阅读页数</Text>
+            <Text style={[styles.bentoValue, { color: t.ink.primary }]}>{finishedToday} 本</Text>
+            <Text style={[styles.bentoLabel, { color: t.ink.tertiary }]}>已读书籍</Text>
           </View>
           {/* 读过书籍 */}
           <View style={[styles.bentoCard, { backgroundColor: t.paper.white, borderColor: t.outline.standard }]}>

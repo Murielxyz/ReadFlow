@@ -151,14 +151,16 @@ export default function TimerScreen() {
           <>
             <TouchableOpacity style={StyleSheet.absoluteFill} activeOpacity={1} onPress={() => setMenuVisible(false)} />
             <View style={[styles.menuDropdown, { backgroundColor: t.paper.primary, borderColor: t.outline.standard }]}>
-              <TouchableOpacity style={[styles.menuItem, { borderBottomColor: t.outline.standard }]} onPress={() => Alert.alert('悬浮窗', '计时过程中，悬浮窗会在所有页面持续显示计时进度。\n\n返回其他页面即可看到悬浮气泡，支持拖动和展开操作。')} activeOpacity={0.6}>
+              <View style={[styles.menuItem, { borderBottomColor: t.outline.standard }]}>
                 <Ionicons name="tablet-portrait-outline" size={16} color={t.accent.primary} />
                 <Text style={[styles.menuItemText, { color: t.ink.primary }]}>悬浮窗</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.menuItem} onPress={() => Alert.alert('锁屏计时', '计时过程中，通知栏会显示当前阅读时长。\n\n此功能无需额外设置，计时器运行时自动启用。')} activeOpacity={0.6}>
+                <Text style={[styles.menuItemHint, { color: t.ink.tertiary }]}>返回其他页面查看</Text>
+              </View>
+              <View style={styles.menuItem}>
                 <Ionicons name="lock-closed-outline" size={16} color={t.accent.primary} />
                 <Text style={[styles.menuItemText, { color: t.ink.primary }]}>锁屏计时</Text>
-              </TouchableOpacity>
+                <Text style={[styles.menuItemHint, { color: t.ink.tertiary }]}>通知栏可暂停/结束</Text>
+              </View>
             </View>
           </>
         )}
@@ -328,6 +330,7 @@ const styles = StyleSheet.create({
   menuDropdown: { position: 'absolute', top: 52, right: spacing.md, width: 200, borderRadius: radii.lg, borderWidth: 1, zIndex: 10, ...softShadow },
   menuItem: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, paddingHorizontal: spacing.lg, paddingVertical: spacing.md, borderBottomWidth: StyleSheet.hairlineWidth },
   menuItemText: { fontFamily: 'PlusJakartaSans_600SemiBold', fontSize: 13, fontWeight: '600' },
+  menuItemHint: { fontFamily: 'PlusJakartaSans_400Regular', fontSize: 11, marginLeft: 'auto' },
 
   coverSection: { alignItems: 'center', paddingVertical: spacing.xl },
   cover: { width: 120, height: 160, borderRadius: radii.md },
